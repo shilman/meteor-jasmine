@@ -13,7 +13,7 @@ Npm.depends({
 });
 
 Package.on_use(function (api) {
-  if (true || process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     api.use(['velocity'], 'server');
     api.use(['templating'], 'client');
 
