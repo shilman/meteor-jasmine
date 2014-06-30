@@ -1,0 +1,13 @@
+{
+  "name": "jasmine",
+  "description": "Easily and securely use Jasmine within client side Meteor",
+  "homepage": "",
+  "author": "Jonas Aschenbrenner",
+  "version": "0.1.0",
+  "git": "",
+  "testPackage": true,
+  "regex": "jasmine/(client|server)/.+\\.(js)$",
+  "packages": {
+    "mirror": "0.0.2"
+  }
+}
