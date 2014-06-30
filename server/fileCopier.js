@@ -3,7 +3,8 @@
  */
 
 /* global
-   TEST_FRAMEWORK_NAME: false
+   TEST_FRAMEWORK_NAME: false,
+   debug: false
  */
 
 var path = Npm.require('path');
@@ -30,20 +31,13 @@ Meteor.startup(function () {
 
 function removeFileFromMirror(file) {
   var mirrorFilePath = convertTestsPathToMirrorPath(file.absolutePath);
-  console.log('Remove file from mirror', mirrorFilePath);
+  debug('Remove file from mirror', mirrorFilePath);
   removeFile(mirrorFilePath);
-}
-
-function addFileToMirror(file) {
-  var mirrorFilePath = convertTestsPathToMirrorPath(file.absolutePath);
-  console.log('Add file to mirror', mirrorFilePath);
-  makeDir(path.dirname(mirrorFilePath));
-  copyFile(file.absolutePath, mirrorFilePath);
 }
 
 function replaceFileInMirror(file) {
   var mirrorFilePath = convertTestsPathToMirrorPath(file.absolutePath);
-  console.log('Replace file in mirror', mirrorFilePath);
+  debug('Replace file in mirror', mirrorFilePath);
   if (fileExists(mirrorFilePath)) {
     removeFile(mirrorFilePath);
   } else {

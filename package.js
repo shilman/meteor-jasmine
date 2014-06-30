@@ -4,7 +4,7 @@
  */
 
 Package.describe({
-  summary: 'Run Jasmine tests in the browser'
+  summary: 'Easily and securely use Jasmine within client side Meteor'
 });
 
 Npm.depends({
@@ -13,9 +13,6 @@ Npm.depends({
 });
 
 Package.on_use(function (api) {
-  console.log('===> NODE_ENV', process.env.NODE_ENV);
-  console.log('===> IS_MIRROR', process.env.IS_MIRROR);
-  console.log('===> PROGRAM', process.argv[0]);
   if (true || process.env.NODE_ENV === 'development') {
     api.use(['velocity'], 'server');
     api.use(['templating'], 'client');
@@ -34,7 +31,6 @@ Package.on_use(function (api) {
         'server/server.js'
       ], 'server');
     } else {
-      console.log('Add fileCopier');
       api.add_files([
         'server/fileCopier.js'
       ], 'server');
