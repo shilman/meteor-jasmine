@@ -1,4 +1,4 @@
-# velocity-jasmine
+# jasmine for Meteor
 
 Run Jasmine tests in the browser. Only supports client tests that run in the browser with the app context for now.
 
@@ -10,7 +10,7 @@ Your normal running app is not affected my the package.
 ### Installation
 
 ```
-mrt add velocity velocity-jasmine velocity-html-reporter
+mrt add velocity jasmine velocity-html-reporter
 ```
 
 Set your `NODE_ENV` environment variable to `development` before you start Meteor.
