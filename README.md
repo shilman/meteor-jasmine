@@ -1,6 +1,7 @@
-# jasmine for Meteor
+# jasmine
 
 Run Jasmine tests in the browser. Only supports client tests that run in the browser with the app context for now.
+You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction.html) and the same syntax for your tests.
 
 Place your tests in the folder `tests/jasmine/client/`. You can nest them inside this folder how you want.
 
