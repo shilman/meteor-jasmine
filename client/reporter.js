@@ -11,10 +11,6 @@ VelocityTestReporter = function VelocityTestReporter(options) {
   var timer = options.timer || noopTimer;
   var ancestors = [];
 
-  this.jasmineStarted = function() {
-    timer.start();
-  };
-
   this.jasmineDone = function() {
     Meteor.call('jasmineMarkClientTestsCompleted');
   };
@@ -25,6 +21,10 @@ VelocityTestReporter = function VelocityTestReporter(options) {
 
   this.suiteDone = function() {
     ancestors.shift();
+  };
+
+  this.specStarted = function () {
+    timer.start();
   };
 
   this.specDone = function(result) {
