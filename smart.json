@@ -7,7 +7,5 @@
   "git": "https://github.com/Sanjo/meteor-jasmine.git",
   "testPackage": true,
   "regex": "jasmine/.+\\.(js)$",
-  "packages": {
-    "mirror": "0.0.2"
-  }
+  "packages": {}
 }
