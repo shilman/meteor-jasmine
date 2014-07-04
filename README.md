@@ -22,6 +22,20 @@ If `NODE_ENV` doesn't have the value `development`, the tests will not run.
 Check out [my example](https://github.com/Sanjo/velocity-example/tree/jasmine-example) of testing
 a improved version of the leaderboard example with unit and integration tests written with Jasmine.
 
+### Mocks
+
+This package ships with mocks for the Meteor API.
+An example for using them can be found [here](https://github.com/Sanjo/velocity-example/blob/jasmine-example/tests/jasmine/client/unit/LeaderboardSpec.js).
+
+You can also create your own mocks. I would suggest to use the following pattern:
+
+Create a mock service with a method `install` and `uninstall` ([example for Meteor](https://github.com/alanning/meteor-stubs/blob/master/index.js))
+
+  * install: Saves the original object and mocks it
+  * uninstall: Restores the original object
+  
+This pattern allows you to enable mocks only for specific tests and have a clean and independent mock for each test.
+
 ### Roadmap
 
 * Support server tests that run inside the Meteor context.
