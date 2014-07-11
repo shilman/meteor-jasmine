@@ -8,7 +8,6 @@ Package.describe({
 });
 
 Npm.depends({
-  'fs.extra': '1.2.1',
   'jasmine-core': '2.0.0',
   'meteor-stubs': '0.0.2'
 });
