@@ -14,20 +14,22 @@ var removeFile = Meteor._wrapAsync(fs.unlink);
 var copyFile = Meteor._wrapAsync(fs.copy);
 var makeDir = Meteor._wrapAsync(fs.mkdirRecursive);
 
-Meteor.startup(function () {
-  var testFilesCursor = VelocityTestFiles.find({
-    targetFramework: TEST_FRAMEWORK_NAME
-  });
+if (process.env.NODE_ENV === 'development') {
+  Meteor.startup(function () {
+    var testFilesCursor = VelocityTestFiles.find({
+      targetFramework: TEST_FRAMEWORK_NAME
+    });
 
-  testFilesCursor.observe({
-    added: replaceFileInMirror,
-    changed: function (newFile, oldFile) {
-      removeFileFromMirror(oldFile);
-      replaceFileInMirror(newFile);
-    },
-    removed: removeFileFromMirror
+    testFilesCursor.observe({
+      added: replaceFileInMirror,
+      changed: function (newFile, oldFile) {
+        removeFileFromMirror(oldFile);
+        replaceFileInMirror(newFile);
+      },
+      removed: removeFileFromMirror
+    });
   });
-});
+}
 
 function removeFileFromMirror(file) {
   var mirrorFilePath = convertTestsPathToMirrorPath(file.absolutePath);
