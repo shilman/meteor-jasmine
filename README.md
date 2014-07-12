@@ -71,5 +71,3 @@ This pattern allows you to enable mocks only for specific tests and have a clean
 The code is licensed under the MIT License (see LICENSE file). 
 
 The boot.js scripts are based on code that is part of Jasmine 2.0 ([LICENSE](https://github.com/pivotal/jasmine/blob/v2.0.0/MIT.LICENSE)).
-
-The `server/lib` scripts are based on code of [jasmine-unit](https://github.com/xolvio/jasmine-unit).

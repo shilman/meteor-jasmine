@@ -10,69 +10,96 @@ var consoleFns = Npm.require('jasmine-core/lib/console/console.js');
 extend(jasmineRequire, consoleFns);
 jasmineRequire.console(jasmineRequire, jasmine);
 
-var env = jasmine.getEnv();
+var isRunning = false
 
-var jasmineInterface = {
-  describe: function(description, specDefinitions) {
-    return env.describe(description, specDefinitions);
-  },
+runServerTests = function () {
+  if (isRunning) {
+    console.log('Already running');
+    return;
+  }
 
-  xdescribe: function(description, specDefinitions) {
-    return env.xdescribe(description, specDefinitions);
-  },
+  isRunning = true;
 
-  it: function(desc, func) {
-    return env.it(desc, func);
-  },
+  // Force to create a new Env
+  jasmine.currentEnv_ = null;
 
-  xit: function(desc, func) {
-    return env.xit(desc, func);
-  },
+  var env = jasmine.getEnv();
 
-  beforeEach: function(beforeEachFunction) {
-    return env.beforeEach(beforeEachFunction);
-  },
+  var jasmineInterface = {
+    describe: function(description, specDefinitions) {
+      return env.describe(description, specDefinitions);
+    },
 
-  afterEach: function(afterEachFunction) {
-    return env.afterEach(afterEachFunction);
-  },
+    xdescribe: function(description, specDefinitions) {
+      return env.xdescribe(description, specDefinitions);
+    },
 
-  expect: function(actual) {
-    return env.expect(actual);
-  },
+    it: function(desc, func) {
+      return env.it(desc, func);
+    },
 
-  spyOn: function(obj, methodName) {
-    return env.spyOn(obj, methodName);
-  },
+    xit: function(desc, func) {
+      return env.xit(desc, func);
+    },
 
-  jsApiReporter: new jasmine.JsApiReporter({
-    timer: new jasmine.Timer()
-  })
+    beforeEach: function(beforeEachFunction) {
+      return env.beforeEach(beforeEachFunction);
+    },
+
+    afterEach: function(afterEachFunction) {
+      return env.afterEach(afterEachFunction);
+    },
+
+    expect: function(actual) {
+      return env.expect(actual);
+    },
+
+    spyOn: function(obj, methodName) {
+      return env.spyOn(obj, methodName);
+    },
+
+    jsApiReporter: new jasmine.JsApiReporter({
+      timer: new jasmine.Timer()
+    })
+  };
+
+  extend(global, jasmineInterface);
+
+  jasmine.addCustomEqualityTester = function(tester) {
+    env.addCustomEqualityTester(tester);
+  };
+
+  jasmine.addMatchers = function(matchers) {
+    return env.addMatchers(matchers);
+  };
+
+  jasmine.clock = function() {
+    return env.clock;
+  };
+
+  // options from command line
+  var isVerbose = true;
+  var showColors = true;
+
+  var specs = getSpecFiles(path.join(Velocity.getTestsPath(), 'jasmine', 'server'));
+
+  console.log('specs', specs);
+
+  executeSpecs(specs, function () {
+    isRunning = false;
+  }, isVerbose, showColors);
 };
-
-extend(global, jasmineInterface);
 
 function extend(destination, source) {
   for (var property in source) destination[property] = source[property];
   return destination;
 }
 
-jasmine.addCustomEqualityTester = function(tester) {
-  env.addCustomEqualityTester(tester);
-};
-
-jasmine.addMatchers = function(matchers) {
-  return env.addMatchers(matchers);
-};
-
-jasmine.clock = function() {
-  return env.clock;
-};
-
 // Jasmine "runner"
 function executeSpecs(specs, done, isVerbose, showColors) {
   global.jasmine = jasmine;
 
+  // TODO: Remove old specs. Maybe clone context.
   for (var i = 0; i < specs.length; i++) {
     var filename = specs[i];
     Npm.require(filename.replace(/\.\w+$/, ""));
@@ -121,19 +148,3 @@ function getFiles(dir, matcher) {
 function getSpecFiles(dir) {
   return getFiles(dir, new RegExp("\\.js$"));
 }
-
-// options from command line
-var isVerbose = true;
-var showColors = true;
-
-runServerTests = function () {
-  var specs = getSpecFiles(path.join(Velocity.getTestsPath(), 'jasmine', 'server'));
-
-  executeSpecs(specs, function(passed) {
-    if (passed) {
-      console.log('Jasmine tests passed');
-    } else {
-      console.log('Jasmine tests did not pass');
-    }
-  }, isVerbose, showColors);
-};

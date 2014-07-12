@@ -11,13 +11,17 @@ VelocityTestReporter = function VelocityTestReporter(options) {
   var timer = options.timer || noopTimer;
   var ancestors = [];
 
-  this.jasmineDone = function() {
-    if (Meteor.isClient) {
+  if (Meteor.isClient) {
+    this.jasmineDone = function () {
       Meteor.call('jasmineMarkClientTestsCompleted');
-    } else if (Meteor.isServer) {
+    };
+  } else if (Meteor.isServer) {
+    this.jasmineDone = Meteor.bindEnvironment(function jasmineDone() {
       Meteor.call('jasmineMarkServerTestsCompleted');
-    }
-  };
+    }, function (error) {
+      console.error(error);
+    });
+  }
 
   this.suiteStarted = function(result) {
     ancestors.unshift(result.description);
