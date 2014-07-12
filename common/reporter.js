@@ -12,7 +12,10 @@ VelocityTestReporter = function VelocityTestReporter(options) {
   var ancestors = [];
 
   this.jasmineDone = function() {
-    Meteor.call('jasmineMarkClientTestsCompleted');
+    if (Meteor.isClient) {
+      Meteor.call('jasmineMarkClientTestsCompleted');
+    }
+    // TODO: Report that server is complete
   };
 
   this.suiteStarted = function(result) {
@@ -50,10 +53,18 @@ VelocityTestReporter = function VelocityTestReporter(options) {
       result.failureStackTrace = test.failedExpectations[0].stack;
     }
 
-    window.ddpParentConnection.call('postResult', result, function(error){
-      if (error){
-        console.error('ERROR WRITING TEST', error);
-      }
-    });
+    if (Meteor.isClient) {
+      window.ddpParentConnection.call('postResult', result, function(error){
+        if (error){
+          console.error('ERROR WRITING TEST', error);
+        }
+      });
+    } else if (Meteor.isServer) {
+      Meteor.call('postResult', result, function(error){
+        if (error){
+          console.error('ERROR WRITING TEST', error);
+        }
+      });
+    }
   }
 };

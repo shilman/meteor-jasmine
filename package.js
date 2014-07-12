@@ -25,7 +25,7 @@ Package.on_use(function (api) {
       '.npm/package/node_modules/meteor-stubs/index.js',
       '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
       '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js',
-      'client/reporter.js',
+      'common/reporter.js',
       'client/boot.js',
       'client/mocker.js'
     ], 'client');
@@ -35,6 +35,8 @@ Package.on_use(function (api) {
     ], 'server');
   } else {
     api.add_files([
+      'common/reporter.js',
+      'server/boot.js',
       'server/fileCopier.js'
     ], 'server');
   }
