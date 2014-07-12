@@ -14,8 +14,9 @@ VelocityTestReporter = function VelocityTestReporter(options) {
   this.jasmineDone = function() {
     if (Meteor.isClient) {
       Meteor.call('jasmineMarkClientTestsCompleted');
+    } else if (Meteor.isServer) {
+      Meteor.call('jasmineMarkServerTestsCompleted');
     }
-    // TODO: Report that server is complete
   };
 
   this.suiteStarted = function(result) {
@@ -54,12 +55,14 @@ VelocityTestReporter = function VelocityTestReporter(options) {
     }
 
     if (Meteor.isClient) {
+      result.isClient = true;
       window.ddpParentConnection.call('postResult', result, function(error){
         if (error){
           console.error('ERROR WRITING TEST', error);
         }
       });
     } else if (Meteor.isServer) {
+      result.isServer = true;
       Meteor.call('postResult', result, function(error){
         if (error){
           console.error('ERROR WRITING TEST', error);

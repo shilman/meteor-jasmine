@@ -35,6 +35,7 @@ Package.on_use(function (api) {
     ], 'server');
   } else {
     api.add_files([
+      'server/server.js',
       'common/reporter.js',
       'server/boot.js',
       'server/fileCopier.js'
