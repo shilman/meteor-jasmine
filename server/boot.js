@@ -103,12 +103,14 @@ function extend(destination, source) {
 function executeSpecs(specs, done, isVerbose, showColors) {
   global.jasmine = jasmine;
 
+  // TODO: Stub global context
+  var context = vm.createContext(global);
   for (var i = 0; i < specs.length; i++) {
     var filename = specs[i];
     // Using vm.runInThisContext instead of require
     // will always freshly load the tests from the file
     var code = readFile(filename, {encoding: 'utf8'});
-    vm.runInThisContext(code, filename);
+    vm.runInContext(code, context, filename);
   }
 
   var env = jasmine.getEnv();
