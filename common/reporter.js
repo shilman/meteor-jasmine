@@ -11,35 +11,7 @@ VelocityTestReporter = function VelocityTestReporter(options) {
   var timer = options.timer || noopTimer;
   var ancestors = [];
 
-  if (Meteor.isClient) {
-    this.jasmineDone = function () {
-      Meteor.call('jasmineMarkClientTestsCompleted');
-    };
-  } else if (Meteor.isServer) {
-    this.jasmineDone = Meteor.bindEnvironment(function jasmineDone() {
-      Meteor.call('jasmineMarkServerTestsCompleted');
-    }, function (error) {
-      console.error(error);
-    });
-  }
-
-  this.suiteStarted = function(result) {
-    ancestors.unshift(result.description);
-  };
-
-  this.suiteDone = function() {
-    ancestors.shift();
-  };
-
-  this.specStarted = function () {
-    timer.start();
-  };
-
-  this.specDone = function(result) {
-    saveTestResult(result);
-  };
-
-  function saveTestResult(test) {
+  var saveTestResult = Meteor.bindEnvironment(function saveTestResult(test) {
     var result = {
       id: 'jasmine:' + test.id,
       //async: test.async,
@@ -73,5 +45,35 @@ VelocityTestReporter = function VelocityTestReporter(options) {
         }
       });
     }
+  }, function (error) {
+    console.error(error);
+  });
+
+  if (Meteor.isClient) {
+    this.jasmineDone = function () {
+      Meteor.call('jasmineMarkClientTestsCompleted');
+    };
+  } else if (Meteor.isServer) {
+    this.jasmineDone = Meteor.bindEnvironment(function jasmineDone() {
+      Meteor.call('jasmineMarkServerTestsCompleted');
+    }, function (error) {
+      console.error(error);
+    });
   }
+
+  this.suiteStarted = function(result) {
+    ancestors.unshift(result.description);
+  };
+
+  this.suiteDone = function() {
+    ancestors.shift();
+  };
+
+  this.specStarted = function () {
+    timer.start();
+  };
+
+  this.specDone = function(result) {
+    saveTestResult(result);
+  };
 };

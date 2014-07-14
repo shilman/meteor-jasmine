@@ -8,13 +8,14 @@ var readFile = Meteor._wrapAsync(fs.readFile);
 var util = Npm.require('util');
 var path = Npm.require('path');
 var vm = Npm.require('vm');
+var _ = Npm.require('lodash');
 
 // boot code for jasmine
 var jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js');
 var jasmine = jasmineRequire.core(jasmineRequire);
 
 var consoleFns = Npm.require('jasmine-core/lib/console/console.js');
-extend(jasmineRequire, consoleFns);
+_.extend(jasmineRequire, consoleFns);
 jasmineRequire.console(jasmineRequire, jasmine);
 
 var isRunning = false;
@@ -57,8 +58,6 @@ var jasmineInterface = {
   })
 };
 
-extend(global, jasmineInterface);
-
 jasmine.addCustomEqualityTester = function(tester) {
   jasmine.getEnv().addCustomEqualityTester(tester);
 };
@@ -92,25 +91,37 @@ runServerTests = function () {
   }, isVerbose, showColors);
 };
 
-function extend(destination, source) {
-  for (var property in source) {
-    destination[property] = source[property];
-  }
-  return destination;
+function runFileInContext(filename, context) {
+  var code = readFile(filename, {encoding: 'utf8'});
+  return vm.runInContext(code, context, filename);
+}
+
+function loadStubs(context) {
+  var filename = path.join(Velocity.getTestsPath(), 'a1-package-stubs.js');
+  var code = readFile(filename, {encoding: 'utf8'});
+  code = ';loadStubs = function () {' + code + '};';
+  return vm.runInContext(code, context, filename);
 }
 
 // Jasmine "runner"
 function executeSpecs(specs, done, isVerbose, showColors) {
-  global.jasmine = jasmine;
+  var contextGlobal = _.clone(global);
+  contextGlobal.jasmine = jasmine;
+  contextGlobal._lodash = _;
+  _.extend(contextGlobal, jasmineInterface);
 
-  // TODO: Stub global context
-  var context = vm.createContext(global);
+  var context = vm.createContext(contextGlobal);
+
+  // Load stubs
+  PackageStubber.stubPackages();
+  loadStubs(context);
+
+  // Load context cleaner
+  var contextCleanerPath = path.join(process.env.PWD, 'packages', 'jasmine', 'common', 'contextCleaner.js');
+  runFileInContext(contextCleanerPath, context);
+
   for (var i = 0; i < specs.length; i++) {
-    var filename = specs[i];
-    // Using vm.runInThisContext instead of require
-    // will always freshly load the tests from the file
-    var code = readFile(filename, {encoding: 'utf8'});
-    vm.runInContext(code, context, filename);
+    runFileInContext(specs[i], context);
   }
 
   var env = jasmine.getEnv();

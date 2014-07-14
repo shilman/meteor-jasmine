@@ -8,6 +8,7 @@
   "testPackage": true,
   "regex": "jasmine/.+\\.(js|coffee|litcoffee|coffee\\.md)$",
   "packages": {
-    "velocity": {}
+    "velocity": {},
+    "package-stubber": {}
   }
 }
