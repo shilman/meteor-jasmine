@@ -1,5 +1,4 @@
-var PWD = process.env.PWD,
-    path = Npm.require('path'),
+var path = Npm.require('path'),
     _ = Npm.require('lodash');
 
 /**

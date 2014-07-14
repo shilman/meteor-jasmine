@@ -1,3 +1,10 @@
+var PWD = process.env.PWD,
+  fs = Npm.require('fs'),
+  readFile = Meteor._wrapAsync(fs.readFile),
+  path = Npm.require('path'),
+  glob = Npm.require('glob'),
+  _ = Npm.require('lodash');
+
 htmlScanner = {
 
   /**
@@ -8,12 +15,7 @@ htmlScanner = {
    * @return {Array} list of template names
    */
   findTemplateNames: function (targetDir) {
-    var PWD = process.env.PWD,
-        fs = Npm.require('fs'),
-        path = Npm.require('path'),
-        glob = Npm.require('glob'),
-        _ = Npm.require('lodash'),
-        files,
+    var files,
         templateNames,
         templateTag;
 
@@ -28,7 +30,7 @@ htmlScanner = {
 
 
     _.each(files, function (filename) {
-      var fileContents = fs.readFileSync(path.join(PWD, filename), 'utf-8'),
+      var fileContents = readFile(path.join(PWD, filename), 'utf-8'),
           matches = fileContents.match(templateTag);
 
       if (matches) {

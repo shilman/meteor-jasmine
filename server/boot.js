@@ -108,9 +108,6 @@ function executeSpecs(specs, done, isVerbose, showColors) {
     Npm: Npm,
     jasmine: jasmine,
     runFileInThisContext: runFileInThisContext,
-    stubLoader: stubLoader,
-    fileLoader: fileLoader,
-    coffeeRequire: coffeeRequire,
     htmlScanner: htmlScanner,
     MeteorStubs: MeteorStubs
   };
