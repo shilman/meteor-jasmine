@@ -8,23 +8,27 @@ beforeEach(function () {
 });
 
 
-/*
-var globalBackup;
+/* This doesn't work with Meteor.Collection
+
+globalBackup = {};
+
+ignoredGlobals = [
+  'ignoredGlobals',
+  'globalBackup',
+  'jasmine',
+  'global',
+  'process',
+  'console',
+  'Buffer',
+  'require',
+  'module',
+  'exports',
+  'clearTimeout',
+  'setInterval',
+  'clearInterval'
+];
 
 beforeEach(function clearContext() {
-  var ignoredGlobals = [
-    'jasmine',
-    'global',
-    'process',
-    'console',
-    'Buffer',
-    'require',
-    'module',
-    'exports',
-    'clearTimeout',
-    'setInterval',
-    'clearInterval'
-  ];
   globalBackup = {};
   for (var key in global) {
     if (global.hasOwnProperty(key) && ignoredGlobals.indexOf(key) === -1) {
@@ -32,17 +36,22 @@ beforeEach(function clearContext() {
     }
   }
 
-  console.log('beforeEach Players', !!Players);
-  console.log('beforeEach global.Players', !!global.Players);
+  MeteorStubs.install();
+  loadStubs();
 });
 
 afterEach(function () {
-  for (var key in globalBackup) {
-    global[key] = globalBackup[key];
+  var key;
+
+  for (key in global) {
+    if (global.hasOwnProperty(key) && ignoredGlobals.indexOf(key) === -1) {
+      delete global[key];
+    }
   }
 
-  console.log('afterEach Players', !!Players);
-  console.log('afterEach global.Players', !!global.Players);
+  for (key in globalBackup) {
+    global[key] = globalBackup[key];
+  }
 });
 */
 
