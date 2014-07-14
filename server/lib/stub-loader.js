@@ -1,26 +1,24 @@
-"use strict";
-
 // stub loader
 
 var PWD = process.env.PWD,
     DEBUG = process.env.DEBUG,
-    path = require('path'),
-    glob = require(PWD + '/packages/jasmine-unit/.npm/package/node_modules/glob');
+    path = Npm.require('path'),
+    glob = Npm.require('glob'),
+    vm = Npm.require('vm');
 
-module.exports = {
+stubLoader = {
 
   /**
    * Load framework-supplied stubs.
    *
-   * @method loadFrameworkStubs 
+   * @method loadFrameworkStubs
    */
-  loadFrameworkStubs: function () {
-    require(PWD + '/packages/jasmine-unit/.npm/package/node_modules/meteor-stubs');
-    MeteorStubs.install();
+  loadFrameworkStubs: function (context) {
+    vm.runInContext('MeteorStubs.install(global);', context);
   },
 
   /**
-   * Load user-defined stubs.  Stub files should be located in the 'tests' 
+   * Load user-defined stubs.  Stub files should be located in the 'tests'
    * directory and end in `-stub.js` or `-stubs.js`.
    *
    * Example:
@@ -29,41 +27,25 @@ module.exports = {
    *
    * @method loadUserStubs
    */
-  loadUserStubs: function () {
-    _loadStubs('tests');
+  loadUserStubs: function (context) {
+    _loadStubs('tests', context);
   },
-
-  /**
-   * Create stubs for each template defined in the Meteor app.
-   *
-   * @method stubTemplates
-   */
-  stubTemplates: function () {
-    var htmlScanner = require('./html-scanner.js'),
-        templateNames = htmlScanner.findTemplateNames(),
-        i = templateNames.length - 1;
-
-    for (; i >= 0; i--) {
-      DEBUG && console.log('stubbing template:', templateNames[i]);
-      Template.stub(templateNames[i]);
-    }
-  }
 
 };
 
-function _loadStubs (dir) {
+function _loadStubs (dir, context) {
   var cwd = path.join(PWD, dir),
       files, i;
 
   files = glob.sync('**/*-stub.js', { cwd: cwd });
   for (i in files) {
     DEBUG && console.log('loading stub file:', files[i]);
-    require(path.join(PWD, dir, files[i]));
+    runFileInContext(path.join(PWD, dir, files[i]), context);
   }
 
   files = glob.sync('**/*-stubs.js', { cwd: cwd });
   for (i in files) {
     DEBUG && console.log('loading stub file:', files[i]);
-    require(path.join(PWD, dir, files[i]));
+    runFileInContext(path.join(PWD, dir, files[i]), context);
   }
 }

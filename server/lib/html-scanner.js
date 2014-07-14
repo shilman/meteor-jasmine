@@ -1,8 +1,4 @@
-"use strict";
-
-// html scanner
-
-module.exports = {
+htmlScanner = {
 
   /**
    * Scan all html files in Meteor app and return list of template names.
@@ -13,10 +9,10 @@ module.exports = {
    */
   findTemplateNames: function (targetDir) {
     var PWD = process.env.PWD,
-        fs = require('fs'),
-        path = require('path'),
-        glob = require(PWD + '/packages/jasmine-unit/.npm/package/node_modules/glob'),
-        _ = require(PWD + '/packages/jasmine-unit/.npm/package/node_modules/lodash'),
+        fs = Npm.require('fs'),
+        path = Npm.require('path'),
+        glob = Npm.require('glob'),
+        _ = Npm.require('lodash'),
         files,
         templateNames,
         templateTag;
@@ -27,7 +23,7 @@ module.exports = {
 
     // templateTag regex matches html tags like:
     //   <template name='test'>
-    // 
+    //
     templateTag = /^<template\s+name=(['"]).*?\1/igm;
 
 

@@ -1,17 +1,11 @@
-"use strict";
-
-// file loader
-
 var PWD = process.env.PWD,
     DEBUG = process.env.DEBUG,
-    fs = require('fs'),
-    path = require('path'),
-    _ = require(PWD + '/packages/jasmine-unit/.npm/package/node_modules/lodash'),
-    glob = require(PWD + '/packages/jasmine-unit/.npm/package/node_modules/glob'),
-    loadOrderSort = require('./load-order-sort.js'),
-    coffeeRequire = require('./coffee-require');
+    fs = Npm.require('fs'),
+    path = Npm.require('path'),
+    _ = Npm.require('lodash'),
+    glob = Npm.require('glob');
 
-module.exports = {
+fileLoader = {
   loadFiles: loadFiles,
   getJsFiles: getJsFiles,
   getCoffeeFiles: getCoffeeFiles,
@@ -27,11 +21,14 @@ module.exports = {
  *
  * @method loadFiles
  */
-function loadFiles () {
+function loadFiles (context) {
   var files = _.union(getJsFiles(), getCoffeeFiles());
 
   files.sort(loadOrderSort([]));
-  _.each(files, loadFile);
+  console.log('Load files', files);
+  _.each(files, function (file) {
+    loadFile(file, context);
+  });
 }
 
 /**
@@ -93,7 +90,7 @@ function filterFiles (files) {
  * @method loadFile
  * @param {String} target file path to load, relative to meteor app
  */
-function loadFile (target) {
+function loadFile (target, context) {
   var pwd = process.env.PWD,
       filename = path.join(pwd, target),
       ext;
@@ -102,7 +99,7 @@ function loadFile (target) {
     ext = path.extname(filename);
     if ('.js' === ext) {
       DEBUG && console.log('loading source file:', filename);
-      require(filename);
+      runFileInContext(filename, context);
     } else if ('.coffee' === ext) {
       DEBUG && console.log('loading source file:', filename);
       coffeeRequire(filename);

@@ -1,10 +1,6 @@
-"use strict";
-
-// loadOrderSort
-
 var PWD = process.env.PWD,
-    path = require('path'),
-    _ = require(PWD + '/packages/jasmine-unit/.npm/package/node_modules/lodash');
+    path = Npm.require('path'),
+    _ = Npm.require('lodash');
 
 /**
  * Returns a sort comparator to order files into Meteor app load order.
@@ -15,12 +11,12 @@ var PWD = process.env.PWD,
  *   https://github.com/meteor/meteor/blob/devel/tools/packages.js#L47-L97
  *   May 5, 2014
  *
- * @method loadOrderSort 
+ * @method loadOrderSort
  * @param {Array} [templateExtensions} Optional array of extensions which will
  *                be loaded first.
  * @return {Number} Either 1 or -1 depending on sort result
  */
-module.exports = function (templateExtensions) {
+loadOrderSort = function (templateExtensions) {
   var templateExtnames = {};
   _.each(templateExtensions, function (extension) {
     templateExtnames['.' + extension] = true;

@@ -9,6 +9,7 @@ var util = Npm.require('util');
 var path = Npm.require('path');
 var vm = Npm.require('vm');
 var _ = Npm.require('lodash');
+Npm.require('meteor-stubs');
 
 // boot code for jasmine
 var jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js');
@@ -91,11 +92,6 @@ runServerTests = function () {
   }, isVerbose, showColors);
 };
 
-function runFileInContext(filename, context) {
-  var code = readFile(filename, {encoding: 'utf8'});
-  return vm.runInContext(code, context, filename);
-}
-
 function loadStubs(context) {
   var filename = path.join(Velocity.getTestsPath(), 'a1-package-stubs.js');
   var code = readFile(filename, {encoding: 'utf8'});
@@ -105,19 +101,48 @@ function loadStubs(context) {
 
 // Jasmine "runner"
 function executeSpecs(specs, done, isVerbose, showColors) {
-  var contextGlobal = _.clone(global);
-  contextGlobal.jasmine = jasmine;
-  contextGlobal._lodash = _;
+  var contextGlobal = {
+    process: process,
+    console: console,
+    Buffer: Buffer,
+    Npm: Npm,
+    jasmine: jasmine,
+    runFileInThisContext: runFileInThisContext,
+    stubLoader: stubLoader,
+    fileLoader: fileLoader,
+    coffeeRequire: coffeeRequire,
+    htmlScanner: htmlScanner,
+    MeteorStubs: MeteorStubs
+  };
   _.extend(contextGlobal, jasmineInterface);
+  contextGlobal.global = contextGlobal;
 
   var context = vm.createContext(contextGlobal);
 
-  // Load stubs
-  PackageStubber.stubPackages();
-  loadStubs(context);
+  var packagePath = path.join(process.env.PWD, 'packages', 'jasmine');
 
-  // Load context cleaner
-  var contextCleanerPath = path.join(process.env.PWD, 'packages', 'jasmine', 'common', 'contextCleaner.js');
+  // load stubs; auto-stub any templates found in Meteor app
+
+  try {
+    stubLoader.loadFrameworkStubs(context);
+    runFileInContext(path.join(packagePath, 'server', 'lib', 'stubTemplates.js'), context);
+    stubLoader.loadUserStubs(context);
+  }
+  catch (ex) {
+    console.log('Error loading stubs', ex.message, ex.stack);
+  }
+
+  // load Meteor app source files prior to running tests
+
+  try {
+    fileLoader.loadFiles(context);
+  }
+  catch (ex) {
+    console.log('Error loading app files', ex.message, ex.stack);
+  }
+
+  // Load context tests
+  var contextCleanerPath = path.join(packagePath, 'common', 'contextSpec.js');
   runFileInContext(contextCleanerPath, context);
 
   for (var i = 0; i < specs.length; i++) {
