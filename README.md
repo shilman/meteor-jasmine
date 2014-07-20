@@ -10,8 +10,9 @@ Your normal running app is not affected my the package.
 
 ### Installation
 
-```
-mrt add velocity jasmine velocity-html-reporter
+```bash
+mrt add jasmine
+mrt add velocity-html-reporter
 ```
 
 ### Example
