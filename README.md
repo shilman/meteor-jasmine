@@ -21,10 +21,40 @@ a improved version of the leaderboard example with unit and integration tests wr
 
 ### Mocks
 
-This package ships with mocks for the Meteor API.
-An example for using them can be found [here](https://github.com/Sanjo/velocity-example/blob/jasmine-example/tests/jasmine/client/unit/LeaderboardSpec.js).
+An example for using mocking can be found [here](https://github.com/Sanjo/velocity-example/blob/jasmine-example/tests/jasmine/client/unit/LeaderboardSpec.js).
 
-You can also create your own mocks. I would suggest to use the following pattern:
+#### Mocking Meteor
+
+This package ships with mocks for the Meteor API. You can mock the Meteor API in your tests with:
+
+```javascript
+beforeEach(function () {
+  MeteorStubs.install();
+});
+
+afterEach(function () {
+  MeteorStubs.uninstall();
+});
+```
+
+#### Mocking objects
+
+You can mock any object with the global helper function `mock`.
+This will avoid unwanted side effects that can affect other tests.
+Here is an example how to mock the Players collection of the Leaderboard example:
+
+```javascript
+beforeEach(function () {
+  mock(window, 'Players');
+});
+```
+
+This will mock the Players collection for each test.
+The original Players collection is automatically restored after each test.
+
+#### Creating more complex mocks
+
+You can also create mocks manually. I would suggest to use the following pattern:
 
 Create a mock service with a method `install` and `uninstall` ([example for Meteor](https://github.com/alanning/meteor-stubs/blob/master/index.js))
 
