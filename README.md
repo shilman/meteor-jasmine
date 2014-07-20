@@ -6,7 +6,7 @@ You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction
 Place your tests in the folder `tests/jasmine/client/`. You can nest them inside this folder how you want.
 
 Open the mirror app `http://localhost:5000`. The mirror app will run the tests.
-Your normal running app is not affected my the package.
+Your normal running app is not affected by the package.
 
 ### Installation
 
@@ -18,12 +18,9 @@ mrt add velocity-html-reporter
 
 ### Example
 
-Check out [my example](https://github.com/Sanjo/velocity-example/tree/jasmine-example) of testing
-a improved version of the leaderboard example with unit and integration tests written with Jasmine.
+Check out the Jasmine tests in the [velocity-example](https://github.com/xolvio/velocity-example/tree/master/tests/jasmine/client).
 
 ### Mocks
-
-An example for using mocking can be found [here](https://github.com/Sanjo/velocity-example/blob/jasmine-example/tests/jasmine/client/unit/LeaderboardSpec.js).
 
 #### Mocking Meteor
 

@@ -3,7 +3,7 @@
   "description": "Easily and securely use Jasmine within client side Meteor",
   "homepage": "https://github.com/Sanjo/meteor-jasmine",
   "author": "Jonas Aschenbrenner",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "git": "https://github.com/Sanjo/meteor-jasmine.git",
   "testPackage": true,
   "regex": "jasmine/.+\\.(js)$",
