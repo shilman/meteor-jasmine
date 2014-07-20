@@ -11,6 +11,7 @@ Your normal running app is not affected my the package.
 ### Installation
 
 ```bash
+mrt add velocity
 mrt add jasmine
 mrt add velocity-html-reporter
 ```
