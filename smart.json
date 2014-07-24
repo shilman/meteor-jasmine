@@ -6,7 +6,7 @@
   "version": "0.1.15",
   "git": "https://github.com/Sanjo/meteor-jasmine.git",
   "testPackage": true,
-  "regex": "jasmine/.+\\.(js|coffee)$",
+  "regex": "jasmine/.+\\.(js|coffee|litcoffee|coffee\\.md)$",
   "packages": {
     "velocity": {}
   }
