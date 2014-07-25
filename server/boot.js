@@ -139,8 +139,8 @@ function executeSpecs(specs, done, isVerbose, showColors) {
   }
 
   // Load context tests
-  var contextCleanerPath = path.join(packagePath, 'common', 'contextSpec.js');
-  runFileInContext(contextCleanerPath, context);
+  var contextSpecPath = path.join(packagePath, 'common', 'contextSpec.js');
+  runFileInContext(contextSpecPath, context);
 
   for (var i = 0; i < specs.length; i++) {
     runFileInContext(specs[i], context);
