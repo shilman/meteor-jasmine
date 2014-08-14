@@ -1,6 +1,7 @@
 /* global
  runServerTests: true,
- VelocityTestReporter: false
+ VelocityTestReporter: false,
+ runFileInContext: false
  */
 
 var fs = Npm.require('fs');
@@ -87,7 +88,7 @@ runServerTests = function () {
 
   var specs = getSpecFiles(path.join(Velocity.getTestsPath(), 'jasmine', 'server'));
 
-  executeSpecs(specs, function () {
+  executeSpecsInContextMode(specs, function () {
     isRunning = false;
   }, isVerbose, showColors);
 };
@@ -99,8 +100,48 @@ function loadStubs(context) {
   return vm.runInContext(code, context, filename);
 }
 
+function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
+  var contextGlobal = global;
+  _.extend(contextGlobal, jasmineInterface);
+  contextGlobal.mocker = Npm.require('component-mocker');
+
+  var context = vm.createContext(contextGlobal);
+
+  var jasminePackagePath = path.join(process.env.PWD, 'packages', 'jasmine');
+
+  // Load context tests
+  var contextSpecPath = path.join(jasminePackagePath, 'common', 'contextSpec.js');
+  runFileInContext(contextSpecPath, context);
+
+  // Load mocker
+  var mockerPath = path.join(jasminePackagePath, 'common', 'mocker.js');
+  runFileInContext(mockerPath, context);
+
+  // Load specs
+  for (var i = 0; i < specs.length; i++) {
+    runFileInContext(specs[i], context);
+  }
+
+  var env = jasmine.getEnv();
+  var consoleReporter = new jasmine.ConsoleReporter({
+    print: util.print,
+    onComplete: done,
+    showColors: showColors,
+    timer: new jasmine.Timer()
+  });
+
+  var velocityReporter = new VelocityTestReporter({
+    env: env,
+    timer: new jasmine.Timer()
+  });
+
+  env.addReporter(consoleReporter);
+  env.addReporter(velocityReporter);
+  env.execute();
+}
+
 // Jasmine "runner"
-function executeSpecs(specs, done, isVerbose, showColors) {
+function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
   var contextGlobal = {
     process: process,
     console: console,
@@ -142,6 +183,7 @@ function executeSpecs(specs, done, isVerbose, showColors) {
   var contextSpecPath = path.join(packagePath, 'common', 'contextSpec.js');
   runFileInContext(contextSpecPath, context);
 
+  // Load specs
   for (var i = 0; i < specs.length; i++) {
     runFileInContext(specs[i], context);
   }

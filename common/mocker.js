@@ -1,7 +1,8 @@
-var mocker = window.mocker.noConflict();
+var context = (typeof window !== 'undefined') ? window : global;
+var mocker = (typeof window !== 'undefined') ? window.mocker.noConflict() : global.mocker;
 var originals = [];
 
-window.mock = function (object, propertyName) {
+var mock = function (object, propertyName) {
   if (typeof object !== 'object' && typeof object !== 'function') {
     throw new Error('object must be an object');
   }
@@ -22,6 +23,8 @@ window.mock = function (object, propertyName) {
   object[propertyName] = mock;
   return mock;
 };
+
+context.mock = mock;
 
 function restoreOriginal(original) {
   original.object[original.propertyName] = original.value;

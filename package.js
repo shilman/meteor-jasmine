@@ -31,7 +31,7 @@ Package.on_use(function (api) {
       '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js',
       'common/reporter.js',
       'client/boot.js',
-      'client/mocker.js'
+      'common/mocker.js'
     ], 'client');
 
     api.add_files([
