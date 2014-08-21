@@ -1,0 +1,55 @@
+// goal: write all package metadata to file so we can create
+// the package mocks when running out-of-context
+
+var ComponentMocker = Npm.require('component-mocker'),
+    fs = Npm.require('fs'),
+    _ = Npm.require('lodash'),
+    path = Npm.require('path'),
+    writeFile = Meteor._wrapAsync(fs.writeFile),
+    packageMetadata = {},
+    outfile = "tests/jasmine/server/unit/packageMocksSpec.js"
+
+function shouldIgnore (packageName) {
+  var packagesToIgnore = ['meteor']
+
+  return _.contains(packagesToIgnore, packageName)
+}
+
+Meteor.startup(function () {
+
+  /*
+    Package = {
+      "meteor": {
+        "Meteor": {
+          // ...
+        }
+      }
+      "roles": {
+        "Roles": {...}
+      },
+      "iron-router": {
+        "Router": {...}
+      }
+    }
+  */
+
+  _.each(Package, function (packageObj, name) {
+    var metadata
+
+    if (!shouldIgnore(name)) {
+      metadata = ComponentMocker.getMetadata(packageObj)
+      packageMetadata[name] = metadata
+    }
+  })
+
+  var template = fs.readFileSync('metadata-reader.js.tpl', 'utf8')
+  var output = _.template(template, {
+    METADATA: JSON.stringify(packageMetadata, null, '  ')
+  })
+
+  // write jasmine spec to file
+  var outputPath = path.join(process.env.PWD, outfile)
+  console.log('writeSpecToFile', outputPath, output)
+  writeFile(outputPath, output, {encoding: 'utf8'})
+
+})  // end Meteor.startup

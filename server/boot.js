@@ -60,17 +60,19 @@ var jasmineInterface = {
   })
 };
 
-jasmine.addCustomEqualityTester = function(tester) {
-  jasmine.getEnv().addCustomEqualityTester(tester);
-};
+_.extend(jasmine, {
+  addCustomEqualityTester: function(tester) {
+    jasmine.getEnv().addCustomEqualityTester(tester);
+  },
 
-jasmine.addMatchers = function(matchers) {
-  return jasmine.getEnv().addMatchers(matchers);
-};
+  addMatchers: function(matchers) {
+    return jasmine.getEnv().addMatchers(matchers);
+  },
 
-jasmine.clock = function() {
-  return jasmine.getEnv().clock;
-};
+  clock: function() {
+    return jasmine.getEnv().clock;
+  }
+})
 
 runServerTests = function () {
   if (isRunning) {
@@ -88,17 +90,11 @@ runServerTests = function () {
 
   var specs = getSpecFiles(path.join(Velocity.getTestsPath(), 'jasmine', 'server'));
 
-  executeSpecsInContextMode(specs, function () {
+
+  executeSpecsUnitMode(specs, function () {
     isRunning = false;
   }, isVerbose, showColors);
 };
-
-function loadStubs(context) {
-  var filename = path.join(Velocity.getTestsPath(), 'a1-package-stubs.js');
-  var code = readFile(filename, {encoding: 'utf8'});
-  code = ';loadStubs = function () {' + code + '};';
-  return vm.runInContext(code, context, filename);
-}
 
 function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
   var contextGlobal = global;
@@ -142,7 +138,7 @@ function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
 
 // Jasmine "runner"
 function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
-  var contextGlobal = {
+  var globalContext = {
     process: process,
     console: console,
     Buffer: Buffer,
@@ -150,20 +146,20 @@ function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
     jasmine: jasmine,
     runFileInThisContext: runFileInThisContext,
     htmlScanner: htmlScanner,
-    MeteorStubs: MeteorStubs
+    MeteorStubs: MeteorStubs,
+    ComponentMocker: Npm.require('component-mocker')
   };
-  _.extend(contextGlobal, jasmineInterface);
-  contextGlobal.global = contextGlobal;
+  _.extend(globalContext, jasmineInterface);
+  MeteorStubs.install(globalContext);
+  globalContext.Meteor.isServer = true;
+  globalContext.Meteor.isClient = false;
 
-  var context = vm.createContext(contextGlobal);
+  var context = vm.createContext(globalContext);
 
   var packagePath = path.join(process.env.PWD, 'packages', 'jasmine');
 
-  // load stubs; auto-stub any templates found in Meteor app
-
+  // load stubs
   try {
-    stubLoader.loadFrameworkStubs(context);
-    runFileInContext(path.join(packagePath, 'server', 'lib', 'stubTemplates.js'), context);
     stubLoader.loadUserStubs(context);
   }
   catch (ex) {
@@ -171,17 +167,15 @@ function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
   }
 
   // load Meteor app source files prior to running tests
-
   try {
-    fileLoader.loadFiles(context);
+    fileLoader.loadFiles(context, {ignoreDirs: 'client'});
   }
   catch (ex) {
     console.log('Error loading app files', ex.message, ex.stack);
   }
 
-  // Load context tests
-  var contextSpecPath = path.join(packagePath, 'common', 'contextSpec.js');
-  runFileInContext(contextSpecPath, context);
+  // load MeteorStubs before and after each test
+  specs.push(path.join(packagePath, 'server', 'contextSpec.js'))
 
   // Load specs
   for (var i = 0; i < specs.length; i++) {

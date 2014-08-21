@@ -1,5 +1,5 @@
 var context = (typeof window !== 'undefined') ? window : global;
-var mocker = (typeof window !== 'undefined') ? window.mocker.noConflict() : global.mocker;
+var mocker = (typeof window !== 'undefined') ? window.mocker : global.ComponentMocker;
 var originals = [];
 
 var mock = function (object, propertyName) {

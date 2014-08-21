@@ -20,9 +20,12 @@ fileLoader = {
  * Excluded directories: private, public, programs, packages, tests
  *
  * @method loadFiles
+ * @param {Object} context Global context
+ * @param {Object} [options]
+ * @param {Array|String} [options.ignoreDirs] Directories to ignore
  */
-function loadFiles (context) {
-  var files = _.union(getJsFiles(), getCoffeeFiles());
+function loadFiles (context, options) {
+  var files = _.union(getJsFiles(options), getCoffeeFiles(options));
 
   files.sort(loadOrderSort([]));
   console.log('Load files', files);
@@ -37,12 +40,14 @@ function loadFiles (context) {
  * Excluded directories: private, public, programs, packages, tests
  *
  * @method getJsFiles
+ * @param {Object} [options]
+ * @param {Array|String} [options.ignoreDirs] Directories to ignore
  * @return {Array.<String>} list of filenames
  */
-function getJsFiles () {
+function getJsFiles (options) {
   var files = glob.sync('**/*.js', { cwd: PWD });
 
-  return filterFiles(files);
+  return filterFiles(files, options);
 }
 
 /**
@@ -51,12 +56,14 @@ function getJsFiles () {
  * Excluded directories: private, public, programs, packages, tests
  *
  * @method getCoffeeFiles
+ * @param {Object} [options]
+ * @param {Array|String} [options.ignoreDirs] Directories to ignore
  * @return {Array.<String>} list of filenames
  */
-function getCoffeeFiles () {
+function getCoffeeFiles (options) {
   var files = glob.sync('**/*.coffee', { cwd: PWD });
 
-  return filterFiles(files);
+  return filterFiles(files, options);
 }
 
 /**
@@ -69,16 +76,28 @@ function getCoffeeFiles () {
  *
  * @method filterFiles
  * @param {Array} files array of filenames to filter
+ * @param {Object} [options]
+ * @param {Array|String} [options.ignoreDirs] Directories to ignore
  * @return {Array} filenames
  */
-function filterFiles (files) {
-  return _.filter(files, function (filepath) {
-    var ignore = filepath.indexOf('tests') == 0 ||
-                 filepath.indexOf('private') == 0 ||
-                 filepath.indexOf('public') == 0 ||
-                 filepath.indexOf('programs') == 0 ||
-                 filepath.indexOf('packages') == 0;
-    return !ignore;
+function filterFiles (files, options) {
+  var shouldIgnore = ['tests', 'private', 'public', 'programs', 'packages'];
+
+  options = options || {};
+  
+  if (options.ignoreDirs) {
+    if ('string' === typeof options.ignoreDirs) {
+      shouldIgnore.push(options.ignoreDirs)
+    } else if (_.isArray(options.ignoreDirs)) {
+      shouldIgnore = shouldIgnore.concat(options.ignoreDirs)
+    }
+  }
+
+  return _.filter(files, function (filepath) {    
+    return !_.some(shouldIgnore, function (dirName) {
+      var startPath = filepath.substring(0, dirName.length)
+      return startPath === dirName
+    })
   });
 }
 

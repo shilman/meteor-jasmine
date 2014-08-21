@@ -21,7 +21,10 @@ Package.on_use(function (api) {
   api.use(['velocity', 'package-stubber'], 'server');
   api.use(['templating'], 'client');
 
-  api.add_files(['server/main.js'], 'server');
+  api.add_files([
+    'server/main.js',
+    'server/mock-generator.js'
+  ], 'server');
 
   if (process.env.IS_MIRROR) {
     api.add_files([
