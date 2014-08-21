@@ -34,11 +34,19 @@ Meteor.startup(function () {
   */
 
   _.each(Package, function (packageObj, name) {
-    var metadata
-
     if (!shouldIgnore(name)) {
-      metadata = ComponentMocker.getMetadata(packageObj)
-      packageMetadata[name] = metadata
+      var packageExports = {}
+
+      _.forOwn(packageObj, function (packageExportObj, packageExportName) {
+        try {
+          packageExports[packageExportName] = ComponentMocker.getMetadata(packageObj)
+        } catch (error) {
+          console.error('Could not mock the export ' + packageExportName +
+            ' of the package ' + name + '. Will continue anyway.')
+        }
+      });
+
+      packageMetadata[name] = packageExports
     }
   })
 
