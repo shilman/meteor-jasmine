@@ -50,14 +50,17 @@ Meteor.startup(function () {
     }
   })
 
-  var template = fs.readFileSync('metadata-reader.js.tpl', 'utf8')
+  var templatePath = path.join(
+    process.env.PWD,
+    'packages/jasmine/server/metadata-reader.js.tpl'
+  )
+  var template = fs.readFileSync(templatePath, 'utf8')
   var output = _.template(template, {
     METADATA: JSON.stringify(packageMetadata, null, '  ')
   })
 
   // write jasmine spec to file
   var outputPath = path.join(process.env.PWD, outfile)
-  console.log('writeSpecToFile', outputPath, output)
   writeFile(outputPath, output, {encoding: 'utf8'})
 
 })  // end Meteor.startup

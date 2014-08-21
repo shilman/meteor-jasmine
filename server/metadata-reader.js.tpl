@@ -1,7 +1,7 @@
 // goal: read JSON metadata for packages and create the mocks
 // DEPENDS ON GLOBAL OBJECT: 'ComponentMocker'
 
-var packageMetadata = JSON.parse('{{METADATA}}')
+var packageMetadata = <%= METADATA %>
 var globalContext = (typeof global !== 'undefined') ? global : window
 var originalContext = []
 
@@ -33,14 +33,13 @@ function restoreOriginals() {
 }
 
 function loadMocks(targetContext) {
-  var mocks = ComponentMocker.generateFromMetadata(packageMetadata);
-  
   targetContext = targetContext || globalContext
-  
-  for (var packageName in mocks) {
-    for (var packageExportName in mocks[packageName]) {
+
+  for (var packageName in packageMetadata) {
+    for (var packageExportName in packageMetadata[packageName]) {
       _saveOriginal(targetContext, packageExportName)
-      targetContext[packageExportName] = mocks[packageName][packageExportName]
+      var packageExport = packageMetadata[packageName][packageExportName]
+      targetContext[packageExportName] = ComponentMocker.generateFromMetadata(packageExport)
     }
   }
 }
