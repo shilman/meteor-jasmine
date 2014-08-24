@@ -3,7 +3,7 @@ var PWD = process.env.PWD,
   readFile = Meteor._wrapAsync(fs.readFile),
   path = Npm.require('path'),
   glob = Npm.require('glob'),
-  _ = Npm.require('lodash');
+  _ = Npm.require('lodash')
 
 htmlScanner = {
 
@@ -17,30 +17,30 @@ htmlScanner = {
   findTemplateNames: function (targetDir) {
     var files,
         templateNames,
-        templateTag;
+        templateTag
 
-    files = glob.sync('**/*.html', { cwd: targetDir || PWD });
+    files = glob.sync('**/*.html', { cwd: targetDir || PWD })
 
-    templateNames = [];
+    templateNames = []
 
     // templateTag regex matches html tags like:
     //   <template name='test'>
     //
-    templateTag = /^<template\s+name=(['"]).*?\1/igm;
+    templateTag = /^<template\s+name=(['"]).*?\1/igm
 
 
     _.each(files, function (filename) {
       var fileContents = readFile(path.join(PWD, filename), 'utf-8'),
-          matches = fileContents.match(templateTag);
+          matches = fileContents.match(templateTag)
 
       if (matches) {
         _.each(matches, function (match) {
-          var name = match.substring(match.indexOf('name=') + 6, match.length - 1);
-          templateNames.push(name);
-        });
+          var name = match.substring(match.indexOf('name=') + 6, match.length - 1)
+          templateNames.push(name)
+        })
       }
-    });
+    })
 
-    return templateNames;
+    return templateNames
   }
-};
+}

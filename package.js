@@ -5,7 +5,7 @@
 
 Package.describe({
   summary: 'Easily and securely use Jasmine within client side Meteor'
-});
+})
 
 Npm.depends({
   'jasmine-core': '2.0.0',
@@ -15,16 +15,16 @@ Npm.depends({
   'glob': '3.2.9',
   'rimraf': '2.2.8',
   'coffee-script': '1.7.1'
-});
+})
 
 Package.on_use(function (api) {
-  api.use(['velocity', 'package-stubber'], 'server');
-  api.use(['templating'], 'client');
+  api.use(['velocity', 'package-stubber'], 'server')
+  api.use(['templating'], 'client')
 
   api.add_files([
     'server/main.js',
     'server/mock-generator.js'
-  ], 'server');
+  ], 'server')
 
   if (process.env.IS_MIRROR) {
     api.add_files([
@@ -35,11 +35,11 @@ Package.on_use(function (api) {
       'common/reporter.js',
       'client/boot.js',
       'common/mocker.js'
-    ], 'client');
+    ], 'client')
 
     api.add_files([
       'server/server.js'
-    ], 'server');
+    ], 'server')
   } else {
     api.add_files([
       'server/server.js',
@@ -52,6 +52,6 @@ Package.on_use(function (api) {
       'server/lib/stub-loader.js',
       'server/boot.js',
       'server/fileCopier.js'
-    ], 'server');
+    ], 'server')
   }
-});
+})

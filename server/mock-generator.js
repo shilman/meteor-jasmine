@@ -44,7 +44,7 @@ Meteor.startup(function () {
           console.error('Could not mock the export ' + packageExportName +
             ' of the package ' + name + '. Will continue anyway.')
         }
-      });
+      })
 
       packageMetadata[name] = packageExports
     }

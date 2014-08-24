@@ -1,5 +1,5 @@
 var path = Npm.require('path'),
-    _ = Npm.require('lodash');
+    _ = Npm.require('lodash')
 
 /**
  * Returns a sort comparator to order files into Meteor app load order.
@@ -16,10 +16,10 @@ var path = Npm.require('path'),
  * @return {Number} Either 1 or -1 depending on sort result
  */
 loadOrderSort = function (templateExtensions) {
-  var templateExtnames = {};
+  var templateExtnames = {}
   _.each(templateExtensions, function (extension) {
-    templateExtnames['.' + extension] = true;
-  });
+    templateExtnames['.' + extension] = true
+  })
 
   return function (a, b) {
     // XXX MODERATELY SIZED HACK --
@@ -30,36 +30,36 @@ loadOrderSort = function (templateExtensions) {
     // before the corresponding .html file.
     //
     // maybe all of the templates should go in one file?
-    var isTemplate_a = _.has(templateExtnames, path.extname(a));
-    var isTemplate_b = _.has(templateExtnames, path.extname(b));
+    var isTemplate_a = _.has(templateExtnames, path.extname(a))
+    var isTemplate_b = _.has(templateExtnames, path.extname(b))
     if (isTemplate_a !== isTemplate_b) {
-      return (isTemplate_a ? -1 : 1);
+      return (isTemplate_a ? -1 : 1)
     }
 
     // main.* loaded last
-    var ismain_a = (path.basename(a).indexOf('main.') === 0);
-    var ismain_b = (path.basename(b).indexOf('main.') === 0);
+    var ismain_a = (path.basename(a).indexOf('main.') === 0)
+    var ismain_b = (path.basename(b).indexOf('main.') === 0)
     if (ismain_a !== ismain_b) {
-      return (ismain_a ? 1 : -1);
+      return (ismain_a ? 1 : -1)
     }
 
     // /lib/ loaded first
     var islib_a = (a.indexOf(path.sep + 'lib' + path.sep) !== -1 ||
-                   a.indexOf('lib' + path.sep) === 0);
+                   a.indexOf('lib' + path.sep) === 0)
     var islib_b = (b.indexOf(path.sep + 'lib' + path.sep) !== -1 ||
-                   b.indexOf('lib' + path.sep) === 0);
+                   b.indexOf('lib' + path.sep) === 0)
     if (islib_a !== islib_b) {
-      return (islib_a ? -1 : 1);
+      return (islib_a ? -1 : 1)
     }
 
     // deeper paths loaded first.
-    var len_a = a.split(path.sep).length;
-    var len_b = b.split(path.sep).length;
+    var len_a = a.split(path.sep).length
+    var len_b = b.split(path.sep).length
     if (len_a !== len_b) {
-      return (len_a < len_b ? 1 : -1);
+      return (len_a < len_b ? 1 : -1)
     }
 
     // otherwise alphabetical
-    return (a < b ? -1 : 1);
-  };
-};
+    return (a < b ? -1 : 1)
+  }
+}

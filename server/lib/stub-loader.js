@@ -4,7 +4,7 @@ var PWD = process.env.PWD,
     DEBUG = process.env.DEBUG,
     path = Npm.require('path'),
     glob = Npm.require('glob'),
-    vm = Npm.require('vm');
+    vm = Npm.require('vm')
 
 stubLoader = {
 
@@ -14,7 +14,7 @@ stubLoader = {
    * @method loadFrameworkStubs
    */
   loadFrameworkStubs: function (context) {
-    vm.runInContext('MeteorStubs.install(global);', context);
+    vm.runInContext('MeteorStubs.install(global)', context)
   },
 
   /**
@@ -28,24 +28,24 @@ stubLoader = {
    * @method loadUserStubs
    */
   loadUserStubs: function (context) {
-    _loadStubs('tests', context);
+    _loadStubs('tests', context)
   },
 
-};
+}
 
 function _loadStubs (dir, context) {
   var cwd = path.join(PWD, dir),
-      files, i;
+      files, i
 
-  files = glob.sync('**/*-stub.js', { cwd: cwd });
+  files = glob.sync('**/*-stub.js', { cwd: cwd })
   for (i in files) {
-    DEBUG && console.log('loading stub file:', files[i]);
-    runFileInContext(path.join(PWD, dir, files[i]), context);
+    DEBUG && console.log('loading stub file:', files[i])
+    runFileInContext(path.join(PWD, dir, files[i]), context)
   }
 
-  files = glob.sync('**/*-stubs.js', { cwd: cwd });
+  files = glob.sync('**/*-stubs.js', { cwd: cwd })
   for (i in files) {
-    DEBUG && console.log('loading stub file:', files[i]);
-    runFileInContext(path.join(PWD, dir, files[i]), context);
+    DEBUG && console.log('loading stub file:', files[i])
+    runFileInContext(path.join(PWD, dir, files[i]), context)
   }
 }

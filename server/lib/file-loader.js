@@ -3,7 +3,7 @@ var PWD = process.env.PWD,
     fs = Npm.require('fs'),
     path = Npm.require('path'),
     _ = Npm.require('lodash'),
-    glob = Npm.require('glob');
+    glob = Npm.require('glob')
 
 fileLoader = {
   loadFiles: loadFiles,
@@ -11,7 +11,7 @@ fileLoader = {
   getCoffeeFiles: getCoffeeFiles,
   filterFiles: filterFiles,
   loadFile: loadFile
-};
+}
 
 /**
  * Loads a Meteor app's javascript and coffeescript files.
@@ -25,13 +25,13 @@ fileLoader = {
  * @param {Array|String} [options.ignoreDirs] Directories to ignore
  */
 function loadFiles (context, options) {
-  var files = _.union(getJsFiles(options), getCoffeeFiles(options));
+  var files = _.union(getJsFiles(options), getCoffeeFiles(options))
 
-  files.sort(loadOrderSort([]));
-  console.log('Load files', files);
+  files.sort(loadOrderSort([]))
+  console.log('Load files', files)
   _.each(files, function (file) {
-    loadFile(file, context);
-  });
+    loadFile(file, context)
+  })
 }
 
 /**
@@ -45,9 +45,9 @@ function loadFiles (context, options) {
  * @return {Array.<String>} list of filenames
  */
 function getJsFiles (options) {
-  var files = glob.sync('**/*.js', { cwd: PWD });
+  var files = glob.sync('**/*.js', { cwd: PWD })
 
-  return filterFiles(files, options);
+  return filterFiles(files, options)
 }
 
 /**
@@ -61,9 +61,9 @@ function getJsFiles (options) {
  * @return {Array.<String>} list of filenames
  */
 function getCoffeeFiles (options) {
-  var files = glob.sync('**/*.coffee', { cwd: PWD });
+  var files = glob.sync('**/*.coffee', { cwd: PWD })
 
-  return filterFiles(files, options);
+  return filterFiles(files, options)
 }
 
 /**
@@ -81,10 +81,10 @@ function getCoffeeFiles (options) {
  * @return {Array} filenames
  */
 function filterFiles (files, options) {
-  var shouldIgnore = ['tests', 'private', 'public', 'programs', 'packages'];
+  var shouldIgnore = ['tests', 'private', 'public', 'programs', 'packages']
 
-  options = options || {};
-  
+  options = options || {}
+
   if (options.ignoreDirs) {
     if ('string' === typeof options.ignoreDirs) {
       shouldIgnore.push(options.ignoreDirs)
@@ -93,12 +93,12 @@ function filterFiles (files, options) {
     }
   }
 
-  return _.filter(files, function (filepath) {    
+  return _.filter(files, function (filepath) {
     return !_.some(shouldIgnore, function (dirName) {
       var startPath = filepath.substring(0, dirName.length)
       return startPath === dirName
     })
-  });
+  })
 }
 
 /**
@@ -112,16 +112,16 @@ function filterFiles (files, options) {
 function loadFile (target, context) {
   var pwd = process.env.PWD,
       filename = path.join(pwd, target),
-      ext;
+      ext
 
   if (fs.existsSync(filename)) {
-    ext = path.extname(filename);
+    ext = path.extname(filename)
     if ('.js' === ext) {
-      DEBUG && console.log('loading source file:', filename);
-      runFileInContext(filename, context);
+      DEBUG && console.log('loading source file:', filename)
+      runFileInContext(filename, context)
     } else if ('.coffee' === ext) {
-      DEBUG && console.log('loading source file:', filename);
-      coffeeRequire(filename);
+      DEBUG && console.log('loading source file:', filename)
+      coffeeRequire(filename)
     }
   }
 }
