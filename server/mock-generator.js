@@ -7,7 +7,7 @@ var ComponentMocker = Npm.require('component-mocker'),
     path = Npm.require('path'),
     writeFile = Meteor._wrapAsync(fs.writeFile),
     packageMetadata = {},
-    outfile = "tests/jasmine/server/unit/packageMocksSpec.js"
+    outfile = 'tests/jasmine/server/unit/packageMocksSpec.js'
 
 function shouldIgnore (packageName) {
   var packagesToIgnore = ['meteor']
