@@ -32,14 +32,12 @@ function restoreOriginals() {
   originalContext = []
 }
 
-function loadMocks(targetContext) {
-  targetContext = targetContext || globalContext
-
+function loadMocks() {
   for (var packageName in packageMetadata) {
     for (var packageExportName in packageMetadata[packageName]) {
-      _saveOriginal(targetContext, packageExportName)
+      _saveOriginal(globalContext, packageExportName)
       var packageExport = packageMetadata[packageName][packageExportName]
-      targetContext[packageExportName] = ComponentMocker.generateFromMetadata(packageExport)
+      globalContext[packageExportName] = ComponentMocker.generateFromMetadata(packageExport)
     }
   }
 }
