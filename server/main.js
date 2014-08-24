@@ -2,15 +2,24 @@
    TEST_FRAMEWORK_NAME: true,
    debug: true
 */
-TEST_FRAMEWORK_NAME = 'jasmine';
+var _ = Npm.require('lodash')
+
+TEST_FRAMEWORK_NAME = 'jasmine'
+TEST_FRAMEWORK_LOG_PREFIX = '[' + TEST_FRAMEWORK_NAME + '] '
+
 
 // Debug log helper
 if (process.env.VELOCITY_DEBUG) {
   debug = function () {
-    var args = Array.prototype.slice.call(arguments);
-    args[0] = TEST_FRAMEWORK_NAME + ': ' + args[0];
-    console.log.apply(console, args);
-  };
+    arguments[0] = TEST_FRAMEWORK_LOG_PREFIX + arguments[0]
+    console.log.apply(console, arguments)
+  }
 } else {
-  debug = function noop() {};
+  debug = _.noop
+}
+
+// Error log helper
+logError = function () {
+  arguments[0] = TEST_FRAMEWORK_LOG_PREFIX + arguments[0]
+  console.error.apply(console, arguments)
 }
