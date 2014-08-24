@@ -88,18 +88,23 @@ runServerTests = function () {
   var isVerbose = true;
   var showColors = true;
 
-  var specs = getSpecFiles(path.join(Velocity.getTestsPath(), 'jasmine', 'server'));
+  var unitSpecs = getSpecFiles(path.join(Velocity.getTestsPath(), 'jasmine', 'server', 'unit'));
+  var integrationSpecs = getSpecFiles(path.join(Velocity.getTestsPath(), 'jasmine', 'server', 'integration'));
 
-
-  executeSpecsUnitMode(specs, function () {
+  var onTestsFinished = function () {
     isRunning = false;
-  }, isVerbose, showColors);
+  }
+  var runIntegrationTests = Meteor.bindEnvironment(function () {
+    executeSpecsInContextMode(integrationSpecs, onTestsFinished, isVerbose, showColors)
+  }, 'executeSpecsInContextMode')
+  // TODO: Run integration tests too
+  executeSpecsUnitMode(unitSpecs, onTestsFinished, isVerbose, showColors);
 };
 
 function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
   var contextGlobal = global;
   _.extend(contextGlobal, jasmineInterface);
-  contextGlobal.mocker = Npm.require('component-mocker');
+  contextGlobal.mocker = contextGlobal.ComponentMocker = Npm.require('component-mocker');
 
   var context = vm.createContext(contextGlobal);
 
@@ -149,6 +154,7 @@ function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
     MeteorStubs: MeteorStubs,
     ComponentMocker: Npm.require('component-mocker')
   };
+  globalContext.global = globalContext;
   _.extend(globalContext, jasmineInterface);
   MeteorStubs.install(globalContext);
   globalContext.Meteor.isServer = true;
