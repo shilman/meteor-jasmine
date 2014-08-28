@@ -98,7 +98,8 @@ runServerTests = function () {
     executeSpecsInContextMode(integrationSpecs, onTestsFinished, isVerbose, showColors)
   }, 'executeSpecsInContextMode')
   // TODO: Run integration tests too
-  executeSpecsUnitMode(unitSpecs, onTestsFinished, isVerbose, showColors)
+  runIntegrationTests()
+  //executeSpecsUnitMode(unitSpecs, runIntegrationTests, isVerbose, showColors)
 }
 
 function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
@@ -132,6 +133,7 @@ function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
   })
 
   var velocityReporter = new VelocityTestReporter({
+    mode: "Server Integration",
     env: env,
     timer: new jasmine.Timer()
   })
@@ -197,6 +199,7 @@ function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
   })
 
   var velocityReporter = new VelocityTestReporter({
+    mode: "Server Unit",
     env: env,
     timer: new jasmine.Timer()
   })

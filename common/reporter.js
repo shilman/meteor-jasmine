@@ -8,12 +8,15 @@ var noopTimer = {
 }
 
 VelocityTestReporter = function VelocityTestReporter(options) {
+  var self = this
   var timer = options.timer || noopTimer
   var ancestors = []
 
+  self.mode = options.mode
+
   var saveTestResult = Meteor.bindEnvironment(function saveTestResult(test) {
     var result = {
-      id: 'jasmine:' + test.id,
+      id: 'jasmine:' + self.mode + ' | ' + test.id,
       //async: test.async,
       framework: 'jasmine',
       name: test.fullName,
@@ -50,30 +53,34 @@ VelocityTestReporter = function VelocityTestReporter(options) {
   })
 
   if (Meteor.isClient) {
-    this.jasmineDone = function () {
+    self.jasmineDone = function () {
       Meteor.call('jasmineMarkClientTestsCompleted')
     }
   } else if (Meteor.isServer) {
-    this.jasmineDone = Meteor.bindEnvironment(function jasmineDone() {
+    self.jasmineDone = Meteor.bindEnvironment(function jasmineDone() {
       Meteor.call('jasmineMarkServerTestsCompleted')
     }, function (error) {
       console.error(error)
     })
   }
 
-  this.suiteStarted = function(result) {
-    ancestors.unshift(result.description)
+  self.suiteStarted = function(result) {
+    var description = result.description
+    if (ancestors.length === 0) {
+      description = self.mode + ' | ' + description
+    }
+    ancestors.unshift(description)
   }
 
-  this.suiteDone = function() {
+  self.suiteDone = function() {
     ancestors.shift()
   }
 
-  this.specStarted = function () {
+  self.specStarted = function () {
     timer.start()
   }
 
-  this.specDone = function(result) {
+  self.specDone = function(result) {
     saveTestResult(result)
   }
 }

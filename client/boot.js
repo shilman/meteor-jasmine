@@ -148,6 +148,7 @@
    * ## Reporters
    */
   var velocityReporter = new VelocityTestReporter({
+    mode: "Client Integration",
     env: env,
     timer: new jasmine.Timer()
   })
