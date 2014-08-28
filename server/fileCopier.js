@@ -13,7 +13,12 @@ if (process.env.NODE_ENV === 'development') {
       targetFramework: TEST_FRAMEWORK_NAME,
       onFileAdded: rerunTests,
       onFileChanged: rerunTests,
-      onFileRemoved: rerunTests
+      onFileRemoved: rerunTests,
+      shouldCopy: function (filepath) {
+        var isClient = filepath.absolutePath.indexOf('server') === -1
+
+        return isClient
+      }
     })
     fileCopier.start()
   })
