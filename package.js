@@ -4,7 +4,10 @@
  */
 
 Package.describe({
-  summary: 'Easily and securely use Jasmine within client side Meteor'
+  name: 'sanjo:jasmine',
+  summary: 'Easily and securely use Jasmine within client side Meteor',
+  version: '0.2.0-pre0',
+  git: 'https://github.com/Sanjo/meteor-jasmine.git'
 })
 
 Npm.depends({
@@ -18,7 +21,18 @@ Npm.depends({
 })
 
 Package.on_use(function (api) {
-  api.use(['velocity', 'package-stubber'], 'server')
+  if (api.versionsFrom) {
+    api.versionsFrom("METEOR@0.9.0");
+    api.use([
+      'velocity:core@0.2.0-pre0',
+      'alanning:package-stubber@0.0.9'
+    ], 'server')
+  } else {
+    api.use([
+      'velocity',
+      'package-stubber'
+    ], 'server')
+  }
   api.use(['templating'], 'client')
 
   api.add_files([
