@@ -5,7 +5,7 @@
 
 Package.describe({
   name: 'sanjo:jasmine',
-  summary: 'Easily and securely use Jasmine within client side Meteor',
+  summary: 'Easily use Jasmine in Meteor',
   version: '0.2.0-pre0',
   git: 'https://github.com/Sanjo/meteor-jasmine.git'
 })

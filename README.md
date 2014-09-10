@@ -1,14 +1,26 @@
 # jasmine
 
-Run Jasmine tests in the browser. Only supports client tests that run in the browser with the app context for now.
-You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction.html) and the same syntax for your tests.
+Easily run Jasmine browser and server tests.
+Supports client tests that run in the browser with the app context
+and unit tests that run in a mocked server environment.
+You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction.html)
+and the same syntax for your tests.
 
-Place your tests in the folder `tests/jasmine/client/`. You can nest them inside this folder how you want.
+Place your client integration tests in the folder `tests/jasmine/client/integration/`.
+Place your server unit tests in the folder `tests/jasmine/server/unit/`
+You can nest them inside this folder how you want.
 
-Open the mirror app `http://localhost:5000`. The mirror app will run the tests.
-Your normal running app is not affected by the package.
+__Important:__ Open `http://localhost:5000` in your browser. It will run the client tests.
 
 ### Installation
+
+#### Since Meteor 0.9
+
+```bash
+meteor add sanjo:jasmine
+```
+
+#### Before Meteor 0.9
 
 ```bash
 mrt add velocity
@@ -18,7 +30,7 @@ mrt add velocity-html-reporter
 
 ### Example
 
-Check out the Jasmine tests in the [velocity-example](https://github.com/xolvio/velocity-example/tree/master/tests/jasmine/client).
+Check out the Jasmine tests in the [velocity-example](https://github.com/meteor-velocity/velocity-example/tree/jasmine-only/tests/jasmine/).
 
 ### Mocks
 
@@ -35,6 +47,10 @@ afterEach(function () {
   MeteorStubs.uninstall();
 });
 ```
+
+This is done automatically for server unit tests.
+You need to do it yourself for your client tests if you want to write
+unit tests that run in the browser.
 
 #### Mocking objects
 
@@ -61,10 +77,6 @@ Create a mock service with a method `install` and `uninstall` ([example for Mete
   * uninstall: Restores the original object
   
 This pattern allows you to enable mocks only for specific tests and have a clean and independent mock for each test.
-
-### Roadmap
-
-* Support server tests that run inside the Meteor context.
 
 ### Copyright
 
