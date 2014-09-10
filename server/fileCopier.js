@@ -5,7 +5,7 @@
  */
 var _ = Npm.require('lodash')
 
-var rerunTests = _.throttle(runServerTests, 100)
+var rerunTests = _.throttle(Meteor.bindEnvironment(runServerTests, 'runServerTests'), 100)
 
 if (process.env.NODE_ENV === 'development') {
   Meteor.startup(function () {
