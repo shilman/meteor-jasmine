@@ -7,6 +7,11 @@ var _ = Npm.require('lodash')
 TEST_FRAMEWORK_NAME = 'jasmine'
 TEST_FRAMEWORK_LOG_PREFIX = '[' + TEST_FRAMEWORK_NAME + '] '
 
+if (Velocity && Velocity.registerTestingFramework) {
+  Velocity.registerTestingFramework(TEST_FRAMEWORK_NAME, {
+    regex: 'jasmine/.+\\.(js|coffee|litcoffee|coffee\\.md)$'
+  })
+}
 
 // Debug log helper
 if (process.env.VELOCITY_DEBUG) {
