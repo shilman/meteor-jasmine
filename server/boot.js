@@ -109,7 +109,7 @@ function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
 
   var context = vm.createContext(contextGlobal)
 
-  var jasminePackagePath = path.join(process.env.PWD, 'packages', 'jasmine')
+  var jasminePackagePath = path.join(process.env.PWD, 'packages', 'sanjo:jasmine')
 
   // Load context tests
   var contextSpecPath = path.join(jasminePackagePath, 'common', 'contextSpec.js')
@@ -164,7 +164,7 @@ function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
 
   var context = vm.createContext(globalContext)
 
-  var packagePath = path.join(process.env.PWD, 'packages', 'jasmine')
+  var packagePath = path.join(process.env.PWD, 'packages', 'sanjo:jasmine')
 
   // load stubs
   try {
