@@ -211,8 +211,18 @@ function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
 
 function getFiles(dir, matcher) {
   var allFiles = []
+  var stat;
 
-  if (fs.statSync(dir).isFile() && dir.match(matcher)) {
+  try {
+    stat = fs.statSync(dir)
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      console.error(error)
+    }
+    return allFiles;
+  }
+
+  if (stat.isFile() && dir.match(matcher)) {
     allFiles.push(dir)
   } else {
     var files = fs.readdirSync(dir)
