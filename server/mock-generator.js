@@ -50,11 +50,7 @@ Meteor.startup(function () {
     }
   })
 
-  var templatePath = path.join(
-    process.env.PWD,
-    'packages/sanjo:jasmine/server/metadata-reader.js.tpl'
-  )
-  var template = fs.readFileSync(templatePath, 'utf8')
+  var template = Assets.getText('server/metadata-reader.js.tpl')
   var output = _.template(template, {
     METADATA: JSON.stringify(packageMetadata, null, '  ')
   })

@@ -98,8 +98,8 @@ runServerTests = function () {
     executeSpecsInContextMode(integrationSpecs, onTestsFinished, isVerbose, showColors)
   }, 'executeSpecsInContextMode')
   // TODO: Run integration tests too
-  runIntegrationTests()
-  //executeSpecsUnitMode(unitSpecs, runIntegrationTests, isVerbose, showColors)
+  //runIntegrationTests()
+  executeSpecsUnitMode(unitSpecs, onTestsFinished, isVerbose, showColors)
 }
 
 function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
@@ -112,8 +112,8 @@ function executeSpecsInContextMode(specs, done, isVerbose, showColors) {
   var jasminePackagePath = path.join(process.env.PWD, 'packages', 'sanjo:jasmine')
 
   // Load context tests
-  var contextSpecPath = path.join(jasminePackagePath, 'common', 'contextSpec.js')
-  runFileInContext(contextSpecPath, context)
+  //var contextSpecPath = path.join(jasminePackagePath, 'common', 'contextSpec.js')
+  //runFileInContext(contextSpecPath, context)
 
   // Load mocker
   var mockerPath = path.join(jasminePackagePath, 'common', 'mocker.js')
@@ -164,7 +164,8 @@ function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
 
   var context = vm.createContext(globalContext)
 
-  var packagePath = path.join(process.env.PWD, 'packages', 'sanjo:jasmine')
+  // Load mock helper
+  runCodeInContext(Assets.getText('common/mocker.js'), context)
 
   // load stubs
   try {
@@ -183,7 +184,7 @@ function executeSpecsUnitMode(specs, done, isVerbose, showColors) {
   }
 
   // load MeteorStubs before and after each test
-  specs.push(path.join(packagePath, 'server', 'contextSpec.js'))
+  runCodeInContext(Assets.getText('server/contextSpec.js'), context)
 
   // Load specs
   for (var i = 0; i < specs.length; i++) {

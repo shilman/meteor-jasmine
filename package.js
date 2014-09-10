@@ -40,6 +40,8 @@ Package.on_use(function (api) {
     'server/mock-generator.js'
   ], 'server')
 
+  api.add_files('server/metadata-reader.js.tpl', 'server', {isAsset: true})
+
   if (process.env.IS_MIRROR) {
     api.add_files([
       '.npm/package/node_modules/component-mocker/index.js',
@@ -67,5 +69,10 @@ Package.on_use(function (api) {
       'server/boot.js',
       'server/fileCopier.js'
     ], 'server')
+
+    api.add_files([
+      'common/mocker.js',
+      'server/contextSpec.js'
+    ], 'server', {isAsset: true})
   }
 })
