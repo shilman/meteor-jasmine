@@ -65,3 +65,9 @@ This pattern allows you to enable mocks only for specific tests and have a clean
 ### Roadmap
 
 * Support server tests that run inside the Meteor context.
+
+### Copyright
+
+The code is licensed under the MIT License (see LICENSE file). 
+
+The boot.js scripts are based on code that is part of Jasmine 2.0 ([LICENSE](https://github.com/pivotal/jasmine/blob/v2.0.0/MIT.LICENSE)).

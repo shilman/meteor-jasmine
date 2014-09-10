@@ -18,10 +18,12 @@
   "strict": false,
   "trailing": true,
   "smarttabs": true,
+  "asi": true,
   "globals": {
     "Meteor": false,
     "DDP": false,
     "Npm": false,
+    "Velocity": false,
     "VelocityTestFiles": false
   }
 }
