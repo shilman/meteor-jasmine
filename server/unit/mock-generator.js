@@ -1,5 +1,7 @@
 // goal: write all package metadata to file so we can create
 // the package mocks when running out-of-context
+//
+// Used to mock packages for the server unit test runner
 
 var ComponentMocker = Npm.require('component-mocker'),
     fs = Npm.require('fs'),

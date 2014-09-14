@@ -4,10 +4,11 @@
 
 var ddpParentConnection = null
 var parentUrl = null
-var areClientTestsCompleted = false
-var areServerTestsCompleted = false
 
-Meteor.startup(function(){
+//var areClientTestsCompleted = false
+//var areServerTestsCompleted = false
+
+Meteor.startup(function() {
   parentUrl = process.env.PARENT_URL
   if (parentUrl) {
     ddpParentConnection = DDP.connect(parentUrl)
@@ -20,19 +21,24 @@ Meteor.methods({
       isMirror: process.env.IS_MIRROR,
       parentUrl: process.env.PARENT_URL
     }
-  },
+  }
 
+  /*
   jasmineMarkClientTestsCompleted: function() {
     areClientTestsCompleted = true
     checkAndMarkTestsCompleted()
   },
 
+  // Required for reporter to tell velocity from the mirror that the tests have completed running
   jasmineMarkServerTestsCompleted: function () {
     areServerTestsCompleted = true
     checkAndMarkTestsCompleted()
   }
+  */
+
 })
 
+/*
 function clientTestsExist() {
   return VelocityTestFiles.find({
     targetFramework: TEST_FRAMEWORK_NAME,
@@ -58,3 +64,4 @@ function checkAndMarkTestsCompleted() {
     connection.call('completed', {framework: TEST_FRAMEWORK_NAME})
   }
 }
+*/

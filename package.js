@@ -22,6 +22,8 @@ Npm.depends({
 })
 
 Package.on_use(function (api) {
+  var both = ['server', 'client']
+
   if (api.versionsFrom) {
     api.versionsFrom("METEOR@0.9.0");
     api.use([
@@ -36,44 +38,70 @@ Package.on_use(function (api) {
   }
   api.use(['templating'], 'client')
 
+
   api.add_files([
-    'server/main.js',
-    'server/mock-generator.js'
-  ], 'server')
+    'lib/JasmineTestFramework.js',
+    'lib/JasmineInterface.js',
+    'lib/VelocityTestReporter.js'
+  ], both)
+
+  // setup each framework
+  //   load jasmine files
+  // load jasmine-velocity reporter
+  // [unit] mock packages
+  // execute tests
+  // report results
+
 
   api.add_files('server/metadata-reader.js.tpl', 'server', {isAsset: true})
 
   if (process.env.IS_MIRROR) {
+    /*
+
+    // Client side integration testing
     api.add_files([
       '.npm/package/node_modules/component-mocker/index.js',
       '.npm/package/node_modules/meteor-stubs/index.js',
       '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
       '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js',
-      'common/reporter.js',
-      'client/boot.js',
-      'common/mocker.js'
+      //'client/jasmine-setup.js',
+      'lib/mock.js'
     ], 'client')
 
     api.add_files([
-      'server/server.js'
+        // set up server-side Meteor methods
+      'server/lib/mirror-info.js'
     ], 'server')
+
+    */
   } else {
+
+    // no mirror
+    
     api.add_files([
-      'server/server.js',
-      'common/reporter.js',
-      'server/runFileInContext.js',
+      'server/lib/runFileInContext.js',
       'server/lib/coffee-require.js',
       'server/lib/file-loader.js',
       'server/lib/html-scanner.js',
       'server/lib/load-order-sort.js',
       'server/lib/stub-loader.js',
-      'server/boot.js',
-      'server/fileCopier.js'
+      //'server/jasmine-setup.js',
+      'server/lib/fileCopier.js',
+
+      'server/unit/mock-generator.js',
+      'server/unit/ServerUnitTestFramework.js',
+
+      'server/lib/get-files.js',
+      'registerFrameworks.js'
     ], 'server')
 
     api.add_files([
-      'common/mocker.js',
-      'server/contextSpec.js'
+      'lib/mock.js',  // load as asset too so vm instance has access
+      'server/lib/contextSpec.js'
     ], 'server', {isAsset: true})
   }
+
+  api.add_files([
+  ], 'server')
+
 })
