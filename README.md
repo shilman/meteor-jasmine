@@ -31,6 +31,8 @@ You can do this easily with Meteorite by adding a `smart.json` file to your app 
 
 and then run `mrt install` ([Get Meteorite here](https://github.com/oortcloud/meteorite/#installing-meteorite)).
 
+You should also install the `velocity:html-reporter` with `meteor add velocity:html-reporter`.
+
 #### Before Meteor 0.9
 
 ```bash
