@@ -15,6 +15,7 @@ Npm.depends({
   'meteor-stubs': '0.0.2',
   'component-mocker': '0.2.0',
   'lodash': '2.4.1',
+  'mkdirp': '0.5.0',
   'glob': '3.2.9',
   'rimraf': '2.2.8',
   'coffee-script': '1.7.1'
