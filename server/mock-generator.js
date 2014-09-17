@@ -5,6 +5,7 @@ var ComponentMocker = Npm.require('component-mocker'),
     fs = Npm.require('fs'),
     _ = Npm.require('lodash'),
     path = Npm.require('path'),
+    mkdirp = Npm.require('mkdirp'),
     writeFile = Meteor._wrapAsync(fs.writeFile),
     packageMetadata = {},
     outfile = 'tests/jasmine/server/unit/packageMocksSpec.js'
@@ -57,6 +58,7 @@ Meteor.startup(function () {
 
   // write jasmine spec to file
   var outputPath = path.join(process.env.PWD, outfile)
+  mkdirp.sync(path.dirname(outputPath))
   writeFile(outputPath, output, {encoding: 'utf8'})
 
 })  // end Meteor.startup
