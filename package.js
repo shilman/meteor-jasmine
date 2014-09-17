@@ -6,7 +6,7 @@
 Package.describe({
   name: 'sanjo:jasmine',
   summary: 'Easily use Jasmine in Meteor',
-  version: '0.2.0-pre1',
+  version: '0.2.0',
   git: 'https://github.com/Sanjo/meteor-jasmine.git'
 })
 
@@ -22,9 +22,9 @@ Npm.depends({
 
 Package.on_use(function (api) {
   if (api.versionsFrom) {
-    api.versionsFrom("METEOR@0.9.0");
+    api.versionsFrom("METEOR@0.9.1");
     api.use([
-      'velocity:core@0.2.0-pre0',
+      'velocity:core@0.2.0',
       'alanning:package-stubber@0.0.9'
     ], 'server')
   } else {
