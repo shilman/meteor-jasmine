@@ -6,7 +6,7 @@
 Package.describe({
   name: 'sanjo:jasmine',
   summary: 'Easily use Jasmine in Meteor',
-  version: '0.2.1',
+  version: '0.2.3',
   git: 'https://github.com/Sanjo/meteor-jasmine.git'
 })
 
@@ -38,42 +38,32 @@ Package.on_use(function (api) {
 
   api.add_files([
     'server/main.js',
-    'server/mock-generator.js'
+    'server/mock-generator.js',
+    'server/server.js',
+    'common/reporter.js',
+    'server/runFileInContext.js',
+    'server/lib/coffee-require.js',
+    'server/lib/file-loader.js',
+    'server/lib/html-scanner.js',
+    'server/lib/load-order-sort.js',
+    'server/lib/stub-loader.js',
+    'server/boot.js',
+    'server/fileCopier.js'
   ], 'server')
 
-  api.add_files('server/metadata-reader.js.tpl', 'server', {isAsset: true})
+  api.add_files([
+    '.npm/package/node_modules/component-mocker/index.js',
+    '.npm/package/node_modules/meteor-stubs/index.js',
+    '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
+    '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js',
+    'common/reporter.js',
+    'client/boot.js',
+    'common/mocker.js'
+  ], 'client')
 
-  if (process.env.IS_MIRROR) {
-    api.add_files([
-      '.npm/package/node_modules/component-mocker/index.js',
-      '.npm/package/node_modules/meteor-stubs/index.js',
-      '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
-      '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js',
-      'common/reporter.js',
-      'client/boot.js',
-      'common/mocker.js'
-    ], 'client')
-
-    api.add_files([
-      'server/server.js'
-    ], 'server')
-  } else {
-    api.add_files([
-      'server/server.js',
-      'common/reporter.js',
-      'server/runFileInContext.js',
-      'server/lib/coffee-require.js',
-      'server/lib/file-loader.js',
-      'server/lib/html-scanner.js',
-      'server/lib/load-order-sort.js',
-      'server/lib/stub-loader.js',
-      'server/boot.js',
-      'server/fileCopier.js'
-    ], 'server')
-
-    api.add_files([
-      'common/mocker.js',
-      'server/contextSpec.js'
-    ], 'server', {isAsset: true})
-  }
+  api.add_files([
+    'server/metadata-reader.js.tpl',
+    'common/mocker.js',
+    'server/contextSpec.js'
+  ], 'server', {isAsset: true})
 })

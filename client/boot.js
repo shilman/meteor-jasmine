@@ -188,14 +188,13 @@
     Meteor.call('jasmineMirrorInfo', function(error, mirrorInfo){
       if (error) {
         throw error
-      } else if (!mirrorInfo.isMirror) {
-        throw new Error('Jasmine has been loaded outside of the mirror. This should not happen!')
+      } else if (mirrorInfo.isMirror) {
+        Meteor.setTimeout(function(){
+          console.log('Running Jasmine tests')
+          window.ddpParentConnection = DDP.connect(mirrorInfo.parentUrl)
+          env.execute()
+        }, 0)
       }
-
-      Meteor.setTimeout(function(){
-        window.ddpParentConnection = DDP.connect(mirrorInfo.parentUrl)
-        env.execute()
-      }, 0)
     })
   })
 

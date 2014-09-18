@@ -5,7 +5,7 @@
  VelocityTestFiles: false
  */
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' && !process.env.IS_MIRROR) {
   var _ = Npm.require('lodash')
   var rerunServerTests = _.throttle(Meteor.bindEnvironment(runServerTests, 'runServerTests'), 100)
 

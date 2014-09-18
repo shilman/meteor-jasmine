@@ -16,22 +16,10 @@ __Important:__ Open `http://localhost:5000` in your browser. It will run the cli
 
 #### Since Meteor 0.9
 
-You still need to install sanjo:jasmine as local package.
-You can do this easily with Meteorite by adding a `smart.json` file to your app that has the following content:
-
-```javascript
-{
-  "packages": {
-    "sanjo:jasmine": {
-      "git": "https://github.com/Sanjo/meteor-jasmine.git"
-    }
-  }
-}
+```bash
+meteor add sanjo:jasmine
+meteor add velocity:html-reporter
 ```
-
-and then run `mrt install` ([Get Meteorite here](https://github.com/oortcloud/meteorite/#installing-meteorite)).
-
-You should also install the `velocity:html-reporter` with `meteor add velocity:html-reporter`.
 
 #### Before Meteor 0.9
 
