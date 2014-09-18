@@ -23,6 +23,12 @@ if (process.env.VELOCITY_DEBUG) {
   debug = _.noop
 }
 
+// Info log helper
+logInfo = function () {
+  arguments[0] = TEST_FRAMEWORK_LOG_PREFIX + arguments[0]
+  console.log.apply(console, arguments)
+}
+
 // Error log helper
 logError = function () {
   arguments[0] = TEST_FRAMEWORK_LOG_PREFIX + arguments[0]

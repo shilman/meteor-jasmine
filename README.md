@@ -10,8 +10,6 @@ Place your client integration tests in the folder `tests/jasmine/client/integrat
 Place your server unit tests in the folder `tests/jasmine/server/unit/`
 You can nest them inside this folder how you want.
 
-__Important:__ Open `http://localhost:5000` in your browser. It will run the client tests.
-
 ### Installation
 
 #### Since Meteor 0.9

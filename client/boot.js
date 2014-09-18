@@ -194,6 +194,19 @@
           window.ddpParentConnection = DDP.connect(mirrorInfo.parentUrl)
           env.execute()
         }, 0)
+      } else {
+        if (mirrorInfo.mirrorUrl) {
+          var iframe = document.createElement('iframe')
+          iframe.src = mirrorInfo.mirrorUrl
+          // Make the iFrame invisible
+          iframe.style.width = 0
+          iframe.style.height = 0
+          iframe.style.border = 0
+          document.body.appendChild(iframe)
+        } else {
+          console.log('[jasmine] The client tests will only run when you reload ' +
+                      'the app after the mirror app has started.')
+        }
       }
     })
   })
