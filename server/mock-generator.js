@@ -10,7 +10,7 @@ var ComponentMocker = Npm.require('component-mocker'),
     packageMetadata = {}
 
 function shouldIgnore (packageName) {
-  var packagesToIgnore = ['meteor']
+  var packagesToIgnore = ['meteor', 'MongoInternals']
 
   return _.contains(packagesToIgnore, packageName)
 }
