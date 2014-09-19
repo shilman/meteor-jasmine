@@ -10,10 +10,16 @@ var ComponentMocker = Npm.require('component-mocker'),
     writeFile = Meteor._wrapAsync(fs.writeFile),
     packageMetadata = {}
 
-function shouldIgnore (packageName) {
-  var packagesToIgnore = ['meteor', 'MongoInternals']
+function shouldIgnorePackage (packageName) {
+  var packagesToIgnore = ['meteor']
 
   return _.contains(packagesToIgnore, packageName)
+}
+
+function shouldIgnoreExport (exportName) {
+  var exportsToIgnore = ['MongoInternals']
+
+  return _.contains(exportsToIgnore, exportName)
 }
 
 Meteor.startup(function () {
@@ -34,16 +40,18 @@ Meteor.startup(function () {
     }
   */
 
-  _.each(Package, function (packageObj, name) {
-    if (!shouldIgnore(name)) {
+  _.forEach(Package, function (packageObj, name) {
+    if (!shouldIgnorePackage(name)) {
       var packageExports = {}
 
       _.forEach(packageObj, function (packageExportObj, packageExportName) {
-        try {
-          packageExports[packageExportName] = ComponentMocker.getMetadata(packageExportObj)
-        } catch (error) {
-          console.error('Could not mock the export ' + packageExportName +
-            ' of the package ' + name + '. Will continue anyway.')
+        if (!shouldIgnoreExport(packageExportName)) {
+          try {
+            packageExports[packageExportName] = ComponentMocker.getMetadata(packageExportObj)
+          } catch (error) {
+            console.error('Could not mock the export ' + packageExportName +
+              ' of the package ' + name + '. Will continue anyway.')
+          }
         }
       })
 

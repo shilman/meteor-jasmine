@@ -41,6 +41,7 @@ Package.on_use(function (api) {
 
 
   api.add_files([
+    'lib/logHelpers.js',
     'lib/JasmineTestFramework.js',
     'lib/JasmineInterface.js',
     'lib/VelocityTestReporter.js'
@@ -56,7 +57,7 @@ Package.on_use(function (api) {
 
   api.add_files('server/metadata-reader.js.tpl', 'server', {isAsset: true})
 
-  // mirror
+  // Files that are needed in the mirror
 
   // Client side integration testing
   api.add_files([
@@ -74,7 +75,7 @@ Package.on_use(function (api) {
     'server/lib/mirror-info.js'
   ], 'server')
 
-  // no mirror
+  // Files that are needed in the main app
 
   api.add_files([
     'server/lib/runFileInContext.js',
@@ -92,6 +93,8 @@ Package.on_use(function (api) {
     'server/lib/get-files.js',
     'registerFrameworks.js'
   ], 'server')
+
+  // Assets
 
   api.add_files([
     'server/package-stubs.js.tpl',
