@@ -1,5 +1,4 @@
-var path = Npm.require('path'),
-    _ = Npm.require('lodash')
+var path = Npm.require('path')
 
 /**
  * Returns a sort comparator to order files into Meteor app load order.

@@ -1,18 +1,25 @@
 // goal: write all package metadata to file so we can create
 // the package mocks when running out-of-context
+//
+// Used to mock packages for the server unit test runner
 
 var ComponentMocker = Npm.require('component-mocker'),
     fs = Npm.require('fs'),
-    _ = Npm.require('lodash'),
     path = Npm.require('path'),
     mkdirp = Npm.require('mkdirp'),
     writeFile = Meteor._wrapAsync(fs.writeFile),
     packageMetadata = {}
 
-function shouldIgnore (packageName) {
-  var packagesToIgnore = ['meteor', 'MongoInternals']
+function shouldIgnorePackage (packageName) {
+  var packagesToIgnore = ['meteor']
 
   return _.contains(packagesToIgnore, packageName)
+}
+
+function shouldIgnoreExport (exportName) {
+  var exportsToIgnore = ['MongoInternals']
+
+  return _.contains(exportsToIgnore, exportName)
 }
 
 Meteor.startup(function () {
@@ -33,16 +40,18 @@ Meteor.startup(function () {
     }
   */
 
-  _.each(Package, function (packageObj, name) {
-    if (!shouldIgnore(name)) {
+  _.forEach(Package, function (packageObj, name) {
+    if (!shouldIgnorePackage(name)) {
       var packageExports = {}
 
-      _.forOwn(packageObj, function (packageExportObj, packageExportName) {
-        try {
-          packageExports[packageExportName] = ComponentMocker.getMetadata(packageExportObj)
-        } catch (error) {
-          console.error('Could not mock the export ' + packageExportName +
-            ' of the package ' + name + '. Will continue anyway.')
+      _.forEach(packageObj, function (packageExportObj, packageExportName) {
+        if (!shouldIgnoreExport(packageExportName)) {
+          try {
+            packageExports[packageExportName] = ComponentMocker.getMetadata(packageExportObj)
+          } catch (error) {
+            console.error('Could not mock the export ' + packageExportName +
+              ' of the package ' + name + '. Will continue anyway.')
+          }
         }
       })
 

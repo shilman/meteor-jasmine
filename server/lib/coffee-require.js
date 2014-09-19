@@ -7,8 +7,7 @@ var fs = Npm.require('fs'),
     vm = Npm.require('vm'),
     path = Npm.require('path'),
     PWD = process.env.PWD,
-    coffee = Npm.require('coffee-script'),
-    _ = Npm.require('lodash')
+    coffee = Npm.require('coffee-script')
 
 var merge = function () {
   var args = Array.prototype.slice.call(arguments, 0)
