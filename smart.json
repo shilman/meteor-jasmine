@@ -1,9 +1,0 @@
-{
-  "name": "jasmine",
-  "description": "Easily and securely use Jasmine within client side Meteor",
-  "homepage": "https://github.com/Sanjo/meteor-jasmine",
-  "author": "Jonas Aschenbrenner, Adrian Lanning",
-  "version": "0.2.0-pre1",
-  "git": "https://github.com/Sanjo/meteor-jasmine.git",
-  "packages": {}
-}

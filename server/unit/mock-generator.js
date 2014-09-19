@@ -8,11 +8,10 @@ var ComponentMocker = Npm.require('component-mocker'),
     path = Npm.require('path'),
     mkdirp = Npm.require('mkdirp'),
     writeFile = Meteor._wrapAsync(fs.writeFile),
-    packageMetadata = {},
-    outfile = 'tests/jasmine/server/unit/packageMocksSpec.js'
+    packageMetadata = {}
 
 function shouldIgnore (packageName) {
-  var packagesToIgnore = ['meteor']
+  var packagesToIgnore = ['meteor', 'MongoInternals']
 
   return _.contains(packagesToIgnore, packageName)
 }
@@ -52,14 +51,27 @@ Meteor.startup(function () {
     }
   })
 
-  var template = Assets.getText('server/metadata-reader.js.tpl')
-  var output = _.template(template, {
-    METADATA: JSON.stringify(packageMetadata, null, '  ')
-  })
+  // Initially load the global stubs for app code
+  writeMetadataToFile(
+    packageMetadata,
+    Assets.getText('server/package-stubs.js.tpl'),
+    'tests/jasmine/server/unit/package-stubs.js'
+  )
 
-  // write jasmine spec to file
-  var outputPath = path.join(process.env.PWD, outfile)
-  mkdirp.sync(path.dirname(outputPath))
-  writeFile(outputPath, output, {encoding: 'utf8'})
+  // Mocks the globals after each tests
+  writeMetadataToFile(
+    packageMetadata,
+    Assets.getText('server/metadata-reader.js.tpl'),
+    'tests/jasmine/server/unit/packageMocksSpec.js'
+  )
 
+  function writeMetadataToFile(metadata, template, destination) {
+    var output = _.template(template, {
+      METADATA: JSON.stringify(metadata, null, '  ')
+    })
+
+    var outputPath = path.join(process.env.PWD, destination)
+    mkdirp.sync(path.dirname(outputPath))
+    writeFile(outputPath, output, {encoding: 'utf8'})
+  }
 })  // end Meteor.startup
