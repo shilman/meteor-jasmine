@@ -2,7 +2,6 @@ var PWD = process.env.PWD,
     DEBUG = process.env.DEBUG,
     fs = Npm.require('fs'),
     path = Npm.require('path'),
-    _ = Npm.require('lodash'),
     glob = Npm.require('glob')
 
 fileLoader = {

@@ -2,8 +2,7 @@ var PWD = process.env.PWD,
   fs = Npm.require('fs'),
   readFile = Meteor._wrapAsync(fs.readFile),
   path = Npm.require('path'),
-  glob = Npm.require('glob'),
-  _ = Npm.require('lodash')
+  glob = Npm.require('glob')
 
 htmlScanner = {
 

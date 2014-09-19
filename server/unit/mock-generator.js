@@ -5,7 +5,6 @@
 
 var ComponentMocker = Npm.require('component-mocker'),
     fs = Npm.require('fs'),
-    _ = Npm.require('lodash'),
     path = Npm.require('path'),
     mkdirp = Npm.require('mkdirp'),
     writeFile = Meteor._wrapAsync(fs.writeFile),
@@ -40,9 +39,9 @@ Meteor.startup(function () {
     if (!shouldIgnore(name)) {
       var packageExports = {}
 
-      _.forOwn(packageObj, function (packageExportObj, packageExportName) {
+      _.forEach(packageObj, function (packageExportObj, packageExportName) {
         try {
-          packageExports[packageExportName] = ComponentMocker.getMetadata(packageObj)
+          packageExports[packageExportName] = ComponentMocker.getMetadata(packageExportObj)
         } catch (error) {
           console.error('Could not mock the export ' + packageExportName +
             ' of the package ' + name + '. Will continue anyway.')

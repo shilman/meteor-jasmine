@@ -14,7 +14,6 @@ Npm.depends({
   'jasmine-core': '2.0.0',
   'meteor-stubs': '0.0.2',
   'component-mocker': '0.2.0',
-  'lodash': '2.4.1',
   'mkdirp': '0.5.0',
   'glob': '3.2.9',
   'rimraf': '2.2.8',
@@ -26,11 +25,13 @@ Package.on_use(function (api) {
 
   if (api.versionsFrom) {
     api.versionsFrom("METEOR@0.9.0");
+    api.use('underscore', both)
     api.use([
-      'velocity:core@0.2.0-pre0',
+      'velocity:core@0.2.0',
       'alanning:package-stubber@0.0.9'
     ], 'server')
   } else {
+    api.use('underscore', both)
     api.use([
       'velocity',
       'package-stubber'
@@ -56,7 +57,7 @@ Package.on_use(function (api) {
   api.add_files('server/metadata-reader.js.tpl', 'server', {isAsset: true})
 
   if (process.env.IS_MIRROR) {
-    /*
+
 
     // Client side integration testing
     api.add_files([
@@ -64,7 +65,8 @@ Package.on_use(function (api) {
       '.npm/package/node_modules/meteor-stubs/index.js',
       '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
       '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js',
-      //'client/jasmine-setup.js',
+      'client/integration/ClientIntegrationTestFramework.js',
+      'client/integration/clientside-setup.js',
       'lib/mock.js'
     ], 'client')
 
@@ -73,7 +75,7 @@ Package.on_use(function (api) {
       'server/lib/mirror-info.js'
     ], 'server')
 
-    */
+
   } else {
 
     // no mirror
@@ -86,10 +88,10 @@ Package.on_use(function (api) {
       'server/lib/load-order-sort.js',
       'server/lib/stub-loader.js',
       //'server/jasmine-setup.js',
-      'server/lib/fileCopier.js',
 
       'server/unit/mock-generator.js',
       'server/unit/ServerUnitTestFramework.js',
+      'client/integration/ClientIntegrationTestFramework.js',
 
       'server/lib/get-files.js',
       'registerFrameworks.js'

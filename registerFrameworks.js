@@ -1,12 +1,20 @@
 
 var frameworks = {
-  //integrationServer: new IntegrationServerTestFramework(),
-  //integrationClient: new IntegrationClientTestFramework(),
-  //unitClient: new unitClientTestFramework(),
+  //serverIntegration: new ServerIntegrationTestFramework(),
+  clientIntegration: new ClientIntegrationTestFramework(),
+  //clientUnit: new ClientUnitTestFramework(),
   serverUnit: new ServerUnitTestFramework()
 }
 
-//frameworks.integrationServer.runTests()
-//frameworks.integrationClient.runTests()
-//frameworks.unitClient.runTests()
-frameworks.serverUnit.start()
+if (!process.env.IS_MIRROR) {
+  frameworks.clientIntegration.registerWithVelocity()
+  frameworks.clientIntegration.startFileCopier()
+
+  frameworks.serverUnit.registerWithVelocity()
+
+  Meteor.startup(function () {
+    //frameworks.serverIntegration.runTests()
+    //frameworks.clientUnit.runTests()
+    frameworks.serverUnit.start()
+  })
+}

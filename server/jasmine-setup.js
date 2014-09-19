@@ -9,7 +9,6 @@ var readFile = Meteor._wrapAsync(fs.readFile)
 var util = Npm.require('util')
 var path = Npm.require('path')
 var vm = Npm.require('vm')
-var _ = Npm.require('lodash')
 Npm.require('meteor-stubs')
 
 // boot code for jasmine
