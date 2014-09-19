@@ -62,6 +62,7 @@ Package.on_use(function (api) {
   ], 'client')
 
   api.add_files([
+    'server/package-stubs.js.tpl',
     'server/metadata-reader.js.tpl',
     'common/mocker.js',
     'server/contextSpec.js'
