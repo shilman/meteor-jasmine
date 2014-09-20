@@ -47,16 +47,6 @@ Package.on_use(function (api) {
     'lib/VelocityTestReporter.js'
   ], both)
 
-  // setup each framework
-  //   load jasmine files
-  // load jasmine-velocity reporter
-  // [unit] mock packages
-  // execute tests
-  // report results
-
-
-  api.add_files('server/metadata-reader.js.tpl', 'server', {isAsset: true})
-
   // Files that are needed in the mirror
 
   // Client side integration testing
@@ -97,8 +87,8 @@ Package.on_use(function (api) {
   // Assets
 
   api.add_files([
-    'server/package-stubs.js.tpl',
-    'server/metadata-reader.js.tpl',
+    'server/unit/package-stubs.js.tpl',
+    'server/unit/metadata-reader.js.tpl',
     'lib/mock.js',
     'server/lib/contextSpec.js'
   ], 'server', {isAsset: true})

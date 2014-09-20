@@ -62,14 +62,14 @@ Meteor.startup(function () {
   // Initially load the global stubs for app code
   writeMetadataToFile(
     packageMetadata,
-    Assets.getText('server/package-stubs.js.tpl'),
+    Assets.getText('server/unit/package-stubs.js.tpl'),
     'tests/jasmine/server/unit/package-stubs.js'
   )
 
   // Mocks the globals after each tests
   writeMetadataToFile(
     packageMetadata,
-    Assets.getText('server/metadata-reader.js.tpl'),
+    Assets.getText('server/unit/metadata-reader.js.tpl'),
     'tests/jasmine/server/unit/packageMocksSpec.js'
   )
 
