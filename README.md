@@ -12,19 +12,9 @@ You can nest them inside this folder how you want.
 
 ### Installation
 
-#### Since Meteor 0.9
-
 ```bash
 meteor add sanjo:jasmine
 meteor add velocity:html-reporter
-```
-
-#### Before Meteor 0.9
-
-```bash
-mrt add velocity
-mrt add jasmine
-mrt add velocity-html-reporter
 ```
 
 ### Example

@@ -20,61 +20,53 @@ Npm.depends({
   'coffee-script': '1.7.1'
 })
 
-Package.on_use(function (api) {
-  var both = ['server', 'client']
-
-  if (api.versionsFrom) {
-    api.versionsFrom("METEOR@0.9.1");
-    api.use('underscore', both)
-    api.use([
-      'velocity:core@0.2.0',
-      'alanning:package-stubber@0.0.9'
-    ], 'server')
-  } else {
-    api.use('underscore', both)
-    api.use([
-      'velocity',
-      'package-stubber'
-    ], 'server')
-  }
-  api.use(['templating'], 'client')
+Package.onUse(function (api) {
+  api.versionsFrom("METEOR@0.9.1");
+  api.use('underscore', ['server', 'client'])
+  api.use([
+    'velocity:core@0.2.0',
+    'alanning:package-stubber@0.0.9'
+  ], 'server')
 
 
-  api.add_files([
+  api.addFiles([
     'lib/logHelpers.js',
     'lib/JasmineTestFramework.js',
     'lib/JasmineInterface.js',
     'lib/VelocityTestReporter.js'
-  ], both)
+  ], ['server', 'client'])
 
+  // ----------------------------------------
   // Files that are needed in the mirror
+  // ----------------------------------------
 
   // Client side integration testing
-  api.add_files([
+  api.addFiles([
     '.npm/package/node_modules/component-mocker/index.js',
     '.npm/package/node_modules/meteor-stubs/index.js',
     '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
     '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js',
     'client/integration/ClientIntegrationTestFramework.js',
-    'client/integration/clientside-setup.js',
+    'client/integration/clientsideSetup.js',
     'lib/mock.js'
   ], 'client')
 
-  api.add_files([
+  api.addFiles([
     // set up server-side Meteor methods
     'server/lib/mirror-info.js'
   ], 'server')
 
+  // ----------------------------------------
   // Files that are needed in the main app
+  // ----------------------------------------
 
-  api.add_files([
+  api.addFiles([
     'server/lib/runFileInContext.js',
     'server/lib/coffee-require.js',
     'server/lib/file-loader.js',
     'server/lib/html-scanner.js',
     'server/lib/load-order-sort.js',
     'server/lib/stub-loader.js',
-    //'server/jasmine-setup.js',
 
     'server/unit/mock-generator.js',
     'server/unit/ServerUnitTestFramework.js',
@@ -84,9 +76,11 @@ Package.on_use(function (api) {
     'registerFrameworks.js'
   ], 'server')
 
+  // ----------------------------------------
   // Assets
+  // ----------------------------------------
 
-  api.add_files([
+  api.addFiles([
     'server/unit/package-stubs.js.tpl',
     'server/unit/metadata-reader.js.tpl',
     'lib/mock.js',
