@@ -54,7 +54,13 @@ _.extend(ServerUnitTestFramework.prototype, {
       Buffer: Buffer,
       Npm: Npm,
       MeteorStubs: MeteorStubs,
-      ComponentMocker: ComponentMocker
+      ComponentMocker: ComponentMocker,
+      // Private state data that only we use
+      __jasmine: {
+        Meteor: {
+          settings: Meteor.settings
+        }
+      }
     }
 
     globalContext.global = globalContext
@@ -66,6 +72,7 @@ _.extend(ServerUnitTestFramework.prototype, {
 
     globalContext.Meteor.isServer = true
     globalContext.Meteor.isClient = false
+    globalContext.Meteor.settings = Meteor.settings
 
     var context = vm.createContext(globalContext)
 
