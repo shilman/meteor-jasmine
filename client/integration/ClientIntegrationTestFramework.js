@@ -35,6 +35,9 @@ _.extend(ClientIntegrationTestFramework.prototype, {
         var isClient = filepath.absolutePath.indexOf('server') === -1
 
         return isClient
+      },
+      convertTestPathToMirrorPath: function (filePath) {
+        return filePath.replace('jasmine/client', 'client/jasmine');
       }
     })
     fileCopier.start()
