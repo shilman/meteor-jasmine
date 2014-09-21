@@ -73,6 +73,9 @@ This pattern allows you to enable mocks only for specific tests and have a clean
 
 1. Increase the version in `package.js` (follow [Semantic Versioning conventions](http://semver.org/))
 2. `meteor publish`
+3. Commit "Bump to version X.X.X"
+4. Create a tag with the version "X.X.X"
+5. Push
 
 ### Copyright
 
