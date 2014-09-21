@@ -67,6 +67,13 @@ Create a mock service with a method `install` and `uninstall` ([example for Mete
   
 This pattern allows you to enable mocks only for specific tests and have a clean and independent mock for each test.
 
+### For sanjo:jasmine maintainers
+
+#### Publish a new version
+
+1. Increase the version in `package.js` (follow [Semantic Versioning conventions](http://semver.org/))
+2. `meteor publish`
+
 ### Copyright
 
 The code is licensed under the MIT License (see LICENSE file). 
