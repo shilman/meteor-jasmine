@@ -9,3 +9,7 @@ for (var packageName in packageMetadata) {
     globalContext[packageExportName] = ComponentMocker.generateFromMetadata(packageExport)
   }
 }
+
+Meteor.isServer = true
+Meteor.isClient = false
+Meteor.settings = __jasmine.Meteor.settings

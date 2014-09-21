@@ -66,14 +66,6 @@ _.extend(ServerUnitTestFramework.prototype, {
     globalContext.global = globalContext
     _.extend(globalContext, jasmineInterface)
 
-    // Need to install Meteor here so the app code files don't throw an error
-    // when loaded
-    MeteorStubs.install(globalContext)
-
-    globalContext.Meteor.isServer = true
-    globalContext.Meteor.isClient = false
-    globalContext.Meteor.settings = Meteor.settings
-
     var context = vm.createContext(globalContext)
 
     // Load mock helper
