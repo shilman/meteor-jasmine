@@ -21,6 +21,10 @@ meteor add velocity:html-reporter
 
 Check out the Jasmine tests in the [velocity-example](https://github.com/meteor-velocity/velocity-example/tree/jasmine-only/tests/jasmine/).
 
+### Stubs
+
+Files in `tests/jasmine` folder (or a subfolder of it) that end with `-stubs.js` or `-stub.js` are treated as stubs and are loaded before the app code.
+
 ### Mocks
 
 #### Mocking Meteor
