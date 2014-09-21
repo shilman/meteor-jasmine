@@ -27,7 +27,6 @@ function loadFiles (context, options) {
   var files = _.union(getJsFiles(options), getCoffeeFiles(options))
 
   files.sort(loadOrderSort([]))
-  console.log('Load files', files)
   _.each(files, function (file) {
     loadFile(file, context)
   })
