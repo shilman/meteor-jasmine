@@ -10,7 +10,7 @@ runCodeInContext = function (code, context, prefix) {
   try {
     vm.runInContext(code, context)
   } catch(error) {
-    console.error.apply(console, prefix +'The code has syntax errors.')
+    console.error.apply(console, ['The code has syntax errors.', error])
   }
 }
 
@@ -19,6 +19,6 @@ runFileInContext = function (filename, context, prefix) {
   try {
     vm.runInContext(code, context, filename)
   } catch(error) {
-    console.error.apply(console, prefix + 'The file "' + filename + '" has syntax errors.')
+    console.error.apply(console, ['The file "' + filename + '" has syntax errors.', error])
   }
 }
