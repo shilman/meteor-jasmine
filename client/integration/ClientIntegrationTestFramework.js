@@ -106,7 +106,7 @@ _.extend(ClientIntegrationTestFramework.prototype, {
     window.jasmineWebClientTestsComplete = false
 
     Meteor.startup(function(){
-      Meteor.call('jasmineMirrorInfo', function(error, mirrorInfo) {
+      Meteor.call('jasmineIsMirror', function(error, mirrorInfo) {
         if (error) {
           throw error
         } else if (mirrorInfo.isMirror) {
@@ -116,18 +116,37 @@ _.extend(ClientIntegrationTestFramework.prototype, {
             env.execute()
           }, 0)
         } else {
-          if (mirrorInfo.mirrorUrl) {
+          var insertMirrorIframe = function (mirrorUrl) {
             var iframe = document.createElement('iframe')
-            iframe.src = mirrorInfo.mirrorUrl
+            iframe.src = mirrorUrl
             // Make the iFrame invisible
             iframe.style.width = 0
             iframe.style.height = 0
             iframe.style.border = 0
             document.body.appendChild(iframe)
-          } else {
-            logInfo('The client tests will only run when you reload ' +
-                    'the app after the mirror app has started.')
           }
+
+          var hasMirrorStartedCheckCallback = function (error, mirrorInfo) {
+            if (error) {
+              throw error
+            } else {
+              if (mirrorInfo) {
+                insertMirrorIframe(mirrorInfo.rootUrl)
+              } else {
+                startHasMirrorStartedTimeout()
+              }
+            }
+          }
+
+          var hasMirrorStartedCheck = function () {
+            Meteor.call('jasmineMirrorInfo', hasMirrorStartedCheckCallback)
+          }
+
+          var startHasMirrorStartedTimeout = function () {
+            return Meteor.setTimeout(hasMirrorStartedCheck, 1000)
+          }
+
+          startHasMirrorStartedTimeout()
         }
       })
     })
