@@ -2,6 +2,39 @@
  Velocity: false
  */
 
+if (Meteor.isServer) {
+
+  var util = Npm.require('util'),
+    jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js'),
+    consoleFns = Npm.require('jasmine-core/lib/console/console.js');
+
+  _.extend(jasmineRequire, consoleFns);
+
+  var jasmine = jasmineRequire.core(jasmineRequire)
+  jasmineRequire.console(jasmineRequire, jasmine);
+
+  var consoleClientReporter;
+
+  Meteor.methods({
+    "jasmineStartedConsumer": function () {
+      consoleClientReporter = new jasmine.ConsoleReporter({
+        name: "Client Integration Tests",
+        print: util.print,
+        cutStack: "/client/jasmine/integration",
+        showColors: true,
+        timer: new jasmine.Timer()
+      })
+      consoleClientReporter.jasmineStarted();
+    },
+    "jasmineDoneConsumer": function () {
+      consoleClientReporter.jasmineDone();
+    },
+    "specDoneConsumer": function (result) {
+      consoleClientReporter.specDone(result);
+    }
+  })
+}
+
 ClientIntegrationTestFramework = function (options) {
   options = options || {}
 
@@ -52,7 +85,7 @@ _.extend(ClientIntegrationTestFramework.prototype, {
     /**
      * Create the Jasmine environment. This is used to run all specs in a project.
      */
-    var env = jasmine.getEnv()
+    var env = this.jasmine.getEnv()
 
     /**
      * ## Runner Parameters
@@ -76,6 +109,20 @@ _.extend(ClientIntegrationTestFramework.prototype, {
       env: env,
       timer: new this.jasmine.Timer()
     })
+
+    var serverReporter = {
+      jasmineStarted: function() {
+        Meteor.call("jasmineStartedConsumer");
+      },
+      jasmineDone: function () {
+        Meteor.call("jasmineDoneConsumer")
+      },
+      specDone: function (result) {
+        Meteor.call("specDoneConsumer", result)
+      }
+    }
+
+    env.addReporter(serverReporter);
 
     /**
      * The `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.
