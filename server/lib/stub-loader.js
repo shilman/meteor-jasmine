@@ -1,7 +1,6 @@
 // stub loader
 
-var PWD = process.env.PWD,
-    path = Npm.require('path'),
+var path = Npm.require('path'),
     glob = Npm.require('glob'),
     vm = Npm.require('vm')
 
@@ -27,24 +26,23 @@ stubLoader = {
    * @method loadUserStubs
    */
   loadUserStubs: function (context) {
-    _loadStubs('tests/jasmine', context)
-  }
+    this._loadStubs('tests/jasmine', context)
+  },
 
-}
+  getStubFiles: function (basePath) {
+    var files = glob.sync('**/*-stub{s,}.js', { cwd: basePath })
+    files = files.map(function (file) {
+      return path.join(basePath, file)
+    })
+    return files
+  },
 
-function _loadStubs (dir, context) {
-  var cwd = path.join(PWD, dir),
-      files, i
+  _loadStubs: function (dir, context) {
+    var cwd = path.join(process.env.PWD, dir)
 
-  files = glob.sync('**/*-stub.js', { cwd: cwd })
-  for (i in files) {
-    debug('loading stub file:', files[i])
-    runFileInContext(path.join(PWD, dir, files[i]), context)
-  }
-
-  files = glob.sync('**/*-stubs.js', { cwd: cwd })
-  for (i in files) {
-    debug('loading stub file:', files[i])
-    runFileInContext(path.join(PWD, dir, files[i]), context)
+    this.getStubFiles(cwd).forEach(function (file) {
+      debug('loading stub file:', file)
+      runFileInContext(file, context)
+    })
   }
 }
