@@ -20,8 +20,8 @@ if (Meteor.isServer) {
       consoleClientReporter = new jasmine.ConsoleReporter({
         name: "Client Integration Tests",
         print: util.print,
-        cutStack: "/client/jasmine/integration",
         showColors: true,
+        cutStack: "/client/jasmine/integration",
         timer: new jasmine.Timer()
       })
       consoleClientReporter.jasmineStarted();
@@ -112,13 +112,13 @@ _.extend(ClientIntegrationTestFramework.prototype, {
 
     var serverReporter = {
       jasmineStarted: function() {
-        Meteor.call("jasmineStartedConsumer");
+        window.ddpParentConnection.call("jasmineStartedConsumer");
       },
       jasmineDone: function () {
-        Meteor.call("jasmineDoneConsumer")
+        window.ddpParentConnection.call("jasmineDoneConsumer")
       },
       specDone: function (result) {
-        Meteor.call("specDoneConsumer", result)
+        window.ddpParentConnection.call("specDoneConsumer", result)
       }
     }
 
