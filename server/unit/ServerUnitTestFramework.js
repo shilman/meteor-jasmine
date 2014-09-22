@@ -3,9 +3,13 @@
 */
 
 var path = Npm.require('path'),
+    util = Npm.require('util'),
     vm = Npm.require('vm'),
     ComponentMocker = Npm.require('component-mocker'),
-    jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js')
+    jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js'),
+    consoleFns = Npm.require('jasmine-core/lib/console/console.js')
+
+_.extend(jasmineRequire, consoleFns);
 
 // MeteorStubs
 Npm.require('meteor-stubs')
@@ -104,16 +108,15 @@ _.extend(ServerUnitTestFramework.prototype, {
       runFileInContext(specs[i], context, this.logPrefix)
     }
 
+    jasmineRequire.console(this.jasmineRequire, jasmine);
+
+    var consoleReporter = new jasmine.ConsoleReporter({
+      print: util.print,
+      showColors: true,
+      timer: new jasmine.Timer()
+    })
 
     var env = jasmine.getEnv()
-
-    /*
-     var consoleReporter = new jasmine.ConsoleReporter({
-     print: util.print,
-     showColors: true,
-     timer: new jasmine.Timer()
-     })
-     */
 
     var velocityReporter = new VelocityTestReporter({
       mode: "Server Unit",
@@ -123,7 +126,7 @@ _.extend(ServerUnitTestFramework.prototype, {
       timer: new jasmine.Timer()
     })
 
-    //env.addReporter(consoleReporter)
+    env.addReporter(consoleReporter)
     env.addReporter(velocityReporter)
     env.execute()
   },
