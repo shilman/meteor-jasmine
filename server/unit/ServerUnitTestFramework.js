@@ -111,6 +111,8 @@ _.extend(ServerUnitTestFramework.prototype, {
     jasmineRequire.console(this.jasmineRequire, jasmine);
 
     var consoleReporter = new jasmine.ConsoleReporter({
+      name: "Server Unit Tests",
+      cutStack: "/tests/jasmine/server/unit/",
       print: util.print,
       showColors: true,
       timer: new jasmine.Timer()
