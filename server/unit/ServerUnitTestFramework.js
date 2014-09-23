@@ -6,10 +6,7 @@ var path = Npm.require('path'),
     util = Npm.require('util'),
     vm = Npm.require('vm'),
     ComponentMocker = Npm.require('component-mocker'),
-    jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js'),
-    consoleFns = Npm.require('jasmine-core/lib/console/console.js')
-
-_.extend(jasmineRequire, consoleFns);
+    jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js')
 
 // MeteorStubs
 Npm.require('meteor-stubs')
@@ -108,16 +105,7 @@ _.extend(ServerUnitTestFramework.prototype, {
       runFileInContext(specs[i], context, this.logPrefix)
     }
 
-    jasmineRequire.console(this.jasmineRequire, jasmine);
-
-    var consoleReporter = new jasmine.ConsoleReporter({
-      name: "Server Unit Tests",
-      cutStack: "/tests/jasmine/server/unit/",
-      print: util.print,
-      showColors: true,
-      timer: new jasmine.Timer()
-    })
-
+    var consoleReporter = getJasmineConsoleReporter("tests/jasmine/server/unit/", false);
     var env = jasmine.getEnv()
 
     var velocityReporter = new VelocityTestReporter({
