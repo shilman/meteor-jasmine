@@ -4,27 +4,11 @@
 
 if (Meteor.isServer) {
 
-  var util = Npm.require('util'),
-    jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js'),
-    consoleFns = Npm.require('jasmine-core/lib/console/console.js');
-
-  _.extend(jasmineRequire, consoleFns);
-
-  var jasmine = jasmineRequire.core(jasmineRequire)
-  jasmineRequire.console(jasmineRequire, jasmine);
-
   var consoleClientReporter;
 
   Meteor.methods({
     "jasmineStartedConsumer": function () {
-      consoleClientReporter = new jasmine.ConsoleReporter({
-        name: "Client Integration Tests",
-        print: util.print,
-        showColors: true,
-        showMessage: true,
-        cutStack: "/client/jasmine/integration",
-        timer: new jasmine.Timer()
-      })
+      consoleClientReporter = getJasmineConsoleReporter("integration", true)
       consoleClientReporter.jasmineStarted();
     },
     "jasmineDoneConsumer": function () {
@@ -111,6 +95,7 @@ _.extend(ClientIntegrationTestFramework.prototype, {
       timer: new this.jasmine.Timer()
     })
 
+    var that = this;
     var serverReporter = {
       jasmineStarted: function() {
         window.ddpParentConnection.call("jasmineStartedConsumer");
