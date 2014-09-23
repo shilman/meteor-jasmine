@@ -21,6 +21,7 @@ if (Meteor.isServer) {
         name: "Client Integration Tests",
         print: util.print,
         showColors: true,
+        showMessage: true,
         cutStack: "/client/jasmine/integration",
         timer: new jasmine.Timer()
       })
