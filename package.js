@@ -68,6 +68,7 @@ Package.onUse(function (api) {
     'server/lib/load-order-sort.js',
     'server/lib/stub-loader.js',
 
+    'server/unit/included-packages.js',
     'server/unit/mock-generator.js',
     'server/unit/ServerUnitTestFramework.js',
     'client/integration/ClientIntegrationTestFramework.js',

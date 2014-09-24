@@ -11,7 +11,7 @@ var ComponentMocker = Npm.require('component-mocker'),
     packageMetadata = {}
 
 function shouldIgnorePackage (packageName) {
-  var packagesToIgnore = ['meteor']
+  var packagesToIgnore = ['meteor'].concat(packagesToIncludeInUnitTests)
 
   return _.contains(packagesToIgnore, packageName)
 }

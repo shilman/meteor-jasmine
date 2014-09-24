@@ -64,6 +64,18 @@ _.extend(ServerUnitTestFramework.prototype, {
       }
     }
 
+    // Add all available packages that should be included
+    packagesToIncludeInUnitTests.forEach(function (packageName) {
+      var packageGlobals = Package[packageName]
+      if (packageGlobals) {
+        _.forEach(packageGlobals, function (packageGlobal, packageGlobalName) {
+          if (!globalContext[packageGlobalName]) {
+            globalContext[packageGlobalName] = packageGlobal
+          }
+        })
+      }
+    })
+
     globalContext.global = globalContext
     _.extend(globalContext, jasmineInterface)
 
