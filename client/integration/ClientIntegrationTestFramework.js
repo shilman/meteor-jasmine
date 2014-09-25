@@ -10,12 +10,16 @@ if (Meteor.isServer) {
     "jasmineStartedConsumer": function () {
       consoleClientReporter = getJasmineConsoleReporter("integration", true)
       consoleClientReporter.jasmineStarted();
+      return consoleClientReporter.id;
     },
-    "jasmineDoneConsumer": function () {
-      consoleClientReporter.jasmineDone();
+    "jasmineDoneConsumer": function (id) {
+      // id prevents multiple postings to to the same console from various runs
+      if (id == null || consoleClientReporter.id === id)
+        consoleClientReporter.jasmineDone();
     },
-    "specDoneConsumer": function (result) {
-      consoleClientReporter.specDone(result);
+    "specDoneConsumer": function (result, id) {
+      if (id == null || consoleClientReporter.id === id)
+        consoleClientReporter.specDone(result);
     }
   })
 }
@@ -96,15 +100,19 @@ _.extend(ClientIntegrationTestFramework.prototype, {
     })
 
     var that = this;
+    var currentId;
+
     var serverReporter = {
       jasmineStarted: function() {
-        window.ddpParentConnection.call("jasmineStartedConsumer");
+        window.ddpParentConnection.call("jasmineStartedConsumer", function(err, result) {
+          currentId = result;
+        });
       },
       jasmineDone: function () {
-        window.ddpParentConnection.call("jasmineDoneConsumer")
+        window.ddpParentConnection.call("jasmineDoneConsumer", currentId)
       },
       specDone: function (result) {
-        window.ddpParentConnection.call("specDoneConsumer", result)
+        window.ddpParentConnection.call("specDoneConsumer", result, currentId)
       }
     }
 
