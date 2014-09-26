@@ -24,7 +24,7 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@0.9.1");
   api.use('underscore', ['server', 'client'])
   api.use([
-    'velocity:core@0.2.13',
+    'velocity:core@0.2.14',
     'alanning:package-stubber@0.0.9'
   ], 'server')
 
