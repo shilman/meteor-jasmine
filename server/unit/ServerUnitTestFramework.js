@@ -114,7 +114,7 @@ _.extend(ServerUnitTestFramework.prototype, {
     // Load specs
     var specs = getSpecFiles(testFilePath)
     for (var i = 0; i < specs.length; i++) {
-      runFileInContext(specs[i], context, this.logPrefix)
+      fileLoader.loadFile(specs[i], context)
     }
 
     var consoleReporter = getJasmineConsoleReporter("tests/jasmine/server/unit/", false);
