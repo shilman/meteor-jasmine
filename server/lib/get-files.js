@@ -33,5 +33,5 @@ function getFiles(dir, matcher) {
 }
 
 getSpecFiles = function (dir) {
-  return getFiles(dir, new RegExp('\\.js$'))
+  return getFiles(dir, new RegExp('\\.(js|coffee)$'))
 }
