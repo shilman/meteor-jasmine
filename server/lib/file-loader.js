@@ -109,7 +109,7 @@ function filterFiles (files, options) {
  */
 function loadFile (target, context) {
   var pwd = process.env.PWD,
-      filename = path.join(pwd, target),
+      filename = path.resolve(pwd, target),
       ext
 
   if (fs.existsSync(filename)) {
