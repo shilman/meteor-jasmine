@@ -17,7 +17,7 @@ stubLoader = {
 
   /**
    * Load user-defined stubs.  Stub files should be located in the 'tests'
-   * directory and end in `-stub.js`, `-stubs.js`, `-stub.coffee`, `-stubs.coffee`.
+   * directory and end in `-stub.js`, `-stubs.js`, `-stub.coffee`, or `-stubs.coffee`.
    *
    * Example:
    *   tests/custom-stub.js
