@@ -56,8 +56,9 @@ var coffeePreprocessor = function (options, content, file, done) {
  *
  * @method coffeeRequire
  * @param {String} target Path to coffeescript file to load.
+ * @param {Object} context the context to run the CoffeeScript code within.
  */
-coffeeRequire = function (target) {
+coffeeRequire = function (target, context) {
   var file = {originalPath: target},
       code = fs.readFileSync(target).toString()
 
@@ -66,7 +67,7 @@ coffeeRequire = function (target) {
     sourceMap: false
   }, code, file, function (err, result) {
     if (!err) {
-      vm.runInThisContext(result, target)
+      vm.runInContext(result, context, target)
     } else {
       console.log(err)
     }
