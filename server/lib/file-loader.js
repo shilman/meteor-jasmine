@@ -106,6 +106,7 @@ function filterFiles (files, options) {
  *
  * @method loadFile
  * @param {String} target file path to load, relative to meteor app
+ * @param {Object} context the context to load files within
  */
 function loadFile (target, context) {
   var pwd = process.env.PWD,
@@ -119,7 +120,7 @@ function loadFile (target, context) {
       runFileInContext(filename, context)
     } else if ('.coffee' === ext) {
       DEBUG && console.log('loading source file:', filename)
-      coffeeRequire(filename)
+      coffeeRequire(filename, context)
     }
   }
 }
