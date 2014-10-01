@@ -7,7 +7,7 @@ var ComponentMocker = Npm.require('component-mocker'),
     fs = Npm.require('fs'),
     path = Npm.require('path'),
     mkdirp = Npm.require('mkdirp'),
-    writeFile = Meteor._wrapAsync(fs.writeFile),
+    writeFile = wrapAsync(fs.writeFile),
     packageMetadata = {}
 
 function shouldIgnorePackage (packageName) {
