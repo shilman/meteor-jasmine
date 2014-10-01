@@ -4,7 +4,7 @@
 
 var vm = Npm.require('vm'),
     fs = Npm.require('fs'),
-    readFile = Meteor._wrapAsync(fs.readFile)
+    readFile = Meteor.wrapAsync(fs.readFile)
 
 runCodeInContext = function (code, context, prefix) {
   try {
