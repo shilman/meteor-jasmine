@@ -28,6 +28,9 @@ Package.onUse(function (api) {
     'alanning:package-stubber@0.0.9'
   ], 'server')
 
+  api.addFiles([
+    'lib/meteor.js'
+  ], 'server')
 
   api.addFiles([
     'lib/logHelpers.js',
