@@ -1,6 +1,6 @@
 var PWD = process.env.PWD,
   fs = Npm.require('fs'),
-  readFile = Meteor.wrapAsync(fs.readFile),
+  readFile = wrapAsync(fs.readFile),
   path = Npm.require('path'),
   glob = Npm.require('glob')
 
