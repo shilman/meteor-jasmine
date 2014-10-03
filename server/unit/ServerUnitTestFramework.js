@@ -90,7 +90,11 @@ _.extend(ServerUnitTestFramework.prototype, {
     var context = vm.createContext(globalContext)
 
     // Load mock helper
-    runCodeInContext(Assets.getText('lib/mock.js'), context, this.logPrefix)
+    runCodeInContext(
+      Assets.getText('lib/mock.js'),
+      context,
+      'sanjo:jasmine/lib/mock.js'
+    )
 
     // load stubs
     try {
@@ -109,7 +113,11 @@ _.extend(ServerUnitTestFramework.prototype, {
     }
 
     // load MeteorStubs before and after each test
-    runCodeInContext(Assets.getText('server/lib/contextSpec.js'), context, this.logPrefix)
+    runCodeInContext(
+      Assets.getText('server/lib/contextSpec.js'),
+      context,
+      'sanjo:jasmine/server/lib/contextSpec.js'
+    )
 
     // Load specs
     var specs = getSpecFiles(testFilePath)

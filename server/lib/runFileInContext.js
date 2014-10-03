@@ -1,24 +1,24 @@
 /* global
-   logError: falses
+   logError: false
  */
 
 var vm = Npm.require('vm'),
     fs = Npm.require('fs'),
     readFile = wrapAsync(fs.readFile)
 
-runCodeInContext = function (code, context, prefix) {
+runCodeInContext = function (code, context, filename) {
   try {
-    vm.runInContext(code, context)
+    vm.runInContext(code, context, filename)
   } catch(error) {
-    console.error.apply(console, ['The code has syntax errors.', error])
+    logError(prefix + 'The code has syntax errors.', error)
   }
 }
 
-runFileInContext = function (filename, context, prefix) {
+runFileInContext = function (filename, context) {
   var code = readFile(filename, {encoding: 'utf8'})
   try {
     vm.runInContext(code, context, filename)
   } catch(error) {
-    console.error.apply(console, ['The file "' + filename + '" has syntax errors.', error])
+    logError('The file "' + filename + '" has syntax errors.', error)
   }
 }
