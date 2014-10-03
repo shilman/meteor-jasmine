@@ -4,7 +4,6 @@
 
 // coffeeRequire
 var fs = Npm.require('fs'),
-    vm = Npm.require('vm'),
     path = Npm.require('path'),
     PWD = process.env.PWD,
     coffee = Npm.require('coffee-script')
@@ -65,11 +64,11 @@ coffeeRequire = function (target, context) {
   coffeePreprocessor({
     bare: true,
     sourceMap: false
-  }, code, file, function (err, result) {
+  }, code, file, function (err, code) {
     if (!err) {
-      vm.runInContext(result, context, target)
+      runCodeInContext(code, context, target)
     } else {
-      console.log(err)
+      logError(err)
     }
   })
 }
