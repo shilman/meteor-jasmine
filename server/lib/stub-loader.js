@@ -32,7 +32,7 @@ stubLoader = {
   },
 
   getStubFiles: function (basePath) {
-    var files = glob.sync('**/*-stub{s,}.(js|coffee)', { cwd: basePath })
+    var files = glob.sync('**/*-stub{s,}.{js,coffee}', { cwd: basePath })
     files = files.map(function (file) {
       return path.join(basePath, file)
     })
