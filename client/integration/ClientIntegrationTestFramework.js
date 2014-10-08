@@ -13,13 +13,14 @@ if (Meteor.isServer) {
       return consoleClientReporter.id;
     },
     "jasmineDoneConsumer": function (id) {
+      check(id, Match.OneOf(null, Match.Integer))
       // id prevents multiple postings to to the same console from various runs
-      if (id == null || consoleClientReporter.id === id)
-        consoleClientReporter.jasmineDone();
+      consoleClientReporter.jasmineDone()
     },
     "specDoneConsumer": function (result, id) {
-      if (id == null || consoleClientReporter.id === id)
-        consoleClientReporter.specDone(result);
+      check(result, Object)
+      check(id, Match.OneOf(null, Match.Integer))
+      consoleClientReporter.specDone(result)
     }
   })
 }
