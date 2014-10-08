@@ -155,14 +155,15 @@ _.extend(ClientIntegrationTestFramework.prototype, {
           throw error
         } else if (mirrorInfo.isMirror) {
           Meteor.setTimeout(function(){
-            logInfo('Running Jasmine tests')
             window.ddpParentConnection = DDP.connect(mirrorInfo.parentUrl)
-            env.execute()
+            if (/jasmine=true/.test(document.location.href.split("?")[1]))
+              logInfo('Running Jasmine tests');
+              env.execute()
           }, 0)
         } else {
           var insertMirrorIframe = function (mirrorUrl) {
             var iframe = document.createElement('iframe')
-            iframe.src = mirrorUrl
+            iframe.src = mirrorUrl + "?jasmine=true"
             // Make the iFrame invisible
             iframe.style.width = 0
             iframe.style.height = 0
