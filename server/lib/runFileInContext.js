@@ -10,7 +10,7 @@ runCodeInContext = function (code, context, filename) {
   try {
     vm.runInContext(code, context, filename)
   } catch(error) {
-    logError(prefix + 'The code has syntax errors.', error)
+    logError('The code has syntax errors.', error)
   }
 }
 
