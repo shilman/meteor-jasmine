@@ -6,13 +6,13 @@
 Package.describe({
   name: 'sanjo:jasmine',
   summary: 'Easily use Jasmine in Meteor',
-  version: '0.3.6',
+  version: '0.4.11',
   git: 'https://github.com/Sanjo/meteor-jasmine.git'
 })
 
 Npm.depends({
   'jasmine-core': '2.0.0',
-  'meteor-stubs': '0.0.3',
+  'meteor-stubs': '0.0.5',
   'component-mocker': '0.2.0',
   'mkdirp': '0.5.0',
   'glob': '3.2.9',
@@ -24,10 +24,13 @@ Package.onUse(function (api) {
   api.versionsFrom("METEOR@0.9.1");
   api.use('underscore', ['server', 'client'])
   api.use([
-    'velocity:core@0.2.13',
+    'velocity:core@0.2.14',
     'alanning:package-stubber@0.0.9'
   ], 'server')
 
+  api.addFiles([
+    'lib/meteor.js'
+  ], 'server')
 
   api.addFiles([
     'lib/logHelpers.js',
@@ -68,6 +71,7 @@ Package.onUse(function (api) {
     'server/lib/load-order-sort.js',
     'server/lib/stub-loader.js',
 
+    'server/unit/included-packages.js',
     'server/unit/mock-generator.js',
     'server/unit/ServerUnitTestFramework.js',
     'client/integration/ClientIntegrationTestFramework.js',

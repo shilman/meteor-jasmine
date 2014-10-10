@@ -4,7 +4,6 @@
 
 // coffeeRequire
 var fs = Npm.require('fs'),
-    vm = Npm.require('vm'),
     path = Npm.require('path'),
     PWD = process.env.PWD,
     coffee = Npm.require('coffee-script')
@@ -56,19 +55,20 @@ var coffeePreprocessor = function (options, content, file, done) {
  *
  * @method coffeeRequire
  * @param {String} target Path to coffeescript file to load.
+ * @param {Object} context the context to run the CoffeeScript code within.
  */
-coffeeRequire = function (target) {
+coffeeRequire = function (target, context) {
   var file = {originalPath: target},
       code = fs.readFileSync(target).toString()
 
   coffeePreprocessor({
     bare: true,
     sourceMap: false
-  }, code, file, function (err, result) {
+  }, code, file, function (err, code) {
     if (!err) {
-      vm.runInThisContext(result, target)
+      runCodeInContext(code, context, target)
     } else {
-      console.log(err)
+      logError(err)
     }
   })
 }

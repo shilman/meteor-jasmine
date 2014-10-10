@@ -22,7 +22,7 @@ function getFiles(dir, matcher) {
       if (fs.statSync(filename).isFile() && filename.match(matcher)) {
         allFiles.push(filename)
       } else if (fs.statSync(filename).isDirectory()) {
-        var subfiles = getFiles(filename)
+        var subfiles = getFiles(filename, matcher)
         subfiles.forEach(function(result) {
           allFiles.push(result)
         })
@@ -33,5 +33,5 @@ function getFiles(dir, matcher) {
 }
 
 getSpecFiles = function (dir) {
-  return getFiles(dir, new RegExp('\\.js$'))
+  return getFiles(dir, new RegExp('\\.(js|coffee)$'))
 }

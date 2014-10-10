@@ -14,7 +14,7 @@ Meteor.methods({
 if (!process.env.IS_MIRROR) {
   Meteor.methods({
     jasmineMirrorInfo: function () {
-      return VelocityMirrors.findOne({name: 'mocha-web'})
+      return VelocityMirrors.findOne({name: {$in: ['shared', 'mocha-web']}})
     }
   })
 }

@@ -17,9 +17,10 @@ meteor add sanjo:jasmine
 meteor add velocity:html-reporter
 ```
 
-### Example
+### Examples and Tutorials
 
-Check out the Jasmine tests in the [velocity-example](https://github.com/meteor-velocity/velocity-example/tree/jasmine-only/tests/jasmine/).
+* [Integration and Unit tests for a refactored version of the Leaderboard example (by Jonas Aschenbrenner)](https://github.com/meteor-velocity/velocity-example/tree/jasmine-only/tests/jasmine/).
+* [Comprehensive tutorial about testing all common aspects of a Meteor app (by Tomas Trescak)](http://doctorllama.wordpress.com/2014/09/22/bullet-proof-internationalised-meteor-applications-with-velocity-unit-testing-integration-testing-and-jasmine/)
 
 ### Stubs
 

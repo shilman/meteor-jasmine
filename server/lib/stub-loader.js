@@ -1,27 +1,18 @@
 // stub loader
 
 var path = Npm.require('path'),
-    glob = Npm.require('glob'),
-    vm = Npm.require('vm')
+    glob = Npm.require('glob')
 
 stubLoader = {
-
-  /**
-   * Load framework-supplied stubs.
-   *
-   * @method loadFrameworkStubs
-   */
-  loadFrameworkStubs: function (context) {
-    vm.runInContext('MeteorStubs.install(global)', context)
-  },
-
   /**
    * Load user-defined stubs.  Stub files should be located in the 'tests'
-   * directory and end in `-stub.js` or `-stubs.js`.
+   * directory and end in `-stub.js`, `-stubs.js`, `-stub.coffee`, or `-stubs.coffee`.
    *
    * Example:
    *   tests/custom-stub.js
    *   tests/custom-stubs.js
+   *   tests/custom-stub.coffee
+   *   tests/custom-stubs.coffee
    *
    * @method loadUserStubs
    */
@@ -30,7 +21,7 @@ stubLoader = {
   },
 
   getStubFiles: function (basePath) {
-    var files = glob.sync('**/*-stub{s,}.js', { cwd: basePath })
+    var files = glob.sync('**/*-stub{s,}.{js,coffee}', { cwd: basePath })
     files = files.map(function (file) {
       return path.join(basePath, file)
     })
@@ -42,7 +33,7 @@ stubLoader = {
 
     this.getStubFiles(cwd).forEach(function (file) {
       debug('loading stub file:', file)
-      runFileInContext(file, context)
+      fileLoader.loadFile(file, context)
     })
   }
 }

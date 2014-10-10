@@ -64,6 +64,18 @@ _.extend(ServerUnitTestFramework.prototype, {
       }
     }
 
+    // Add all available packages that should be included
+    packagesToIncludeInUnitTests.forEach(function (packageName) {
+      var packageGlobals = Package[packageName]
+      if (packageGlobals) {
+        _.forEach(packageGlobals, function (packageGlobal, packageGlobalName) {
+          if (!globalContext[packageGlobalName]) {
+            globalContext[packageGlobalName] = packageGlobal
+          }
+        })
+      }
+    })
+
     globalContext.global = globalContext
     _.extend(globalContext, jasmineInterface)
 
@@ -78,7 +90,10 @@ _.extend(ServerUnitTestFramework.prototype, {
     var context = vm.createContext(globalContext)
 
     // Load mock helper
-    runCodeInContext(Assets.getText('lib/mock.js'), context, this.logPrefix)
+    runCodeInContext(
+      Assets.getText('lib/mock.js'),
+      context
+    )
 
     // load stubs
     try {
@@ -97,12 +112,15 @@ _.extend(ServerUnitTestFramework.prototype, {
     }
 
     // load MeteorStubs before and after each test
-    runCodeInContext(Assets.getText('server/lib/contextSpec.js'), context, this.logPrefix)
+    runCodeInContext(
+      Assets.getText('server/lib/contextSpec.js'),
+      context
+    )
 
     // Load specs
     var specs = getSpecFiles(testFilePath)
     for (var i = 0; i < specs.length; i++) {
-      runFileInContext(specs[i], context, this.logPrefix)
+      fileLoader.loadFile(specs[i], context)
     }
 
     var consoleReporter = getJasmineConsoleReporter("tests/jasmine/server/unit/", false);

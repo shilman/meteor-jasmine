@@ -7,13 +7,26 @@ var ComponentMocker = Npm.require('component-mocker'),
     fs = Npm.require('fs'),
     path = Npm.require('path'),
     mkdirp = Npm.require('mkdirp'),
-    writeFile = Meteor._wrapAsync(fs.writeFile),
+    writeFile = wrapAsync(fs.writeFile),
     packageMetadata = {}
 
 function shouldIgnorePackage (packageName) {
   var packagesToIgnore = ['meteor']
+    .concat(getEnvironmentIgnoredPackages())
+    .concat(packagesToIncludeInUnitTests)
 
   return _.contains(packagesToIgnore, packageName)
+}
+
+function getEnvironmentIgnoredPackages() {
+  var packagesToIgnore = process.env.JASMINE_IGNORE_PACKAGES
+  if (packagesToIgnore) {
+    return packagesToIgnore.split(',').map(function (packageName) {
+      return packageName.trim()
+    });
+  } else {
+    return []
+  }
 }
 
 function shouldIgnoreExport (exportName) {
