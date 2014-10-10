@@ -11,9 +11,22 @@ var ComponentMocker = Npm.require('component-mocker'),
     packageMetadata = {}
 
 function shouldIgnorePackage (packageName) {
-  var packagesToIgnore = ['meteor'].concat(packagesToIncludeInUnitTests)
+  var packagesToIgnore = ['meteor']
+    .concat(getEnvironmentIgnoredPackages())
+    .concat(packagesToIncludeInUnitTests)
 
   return _.contains(packagesToIgnore, packageName)
+}
+
+function getEnvironmentIgnoredPackages() {
+  var packagesToIgnore = process.env.JASMINE_IGNORE_PACKAGES
+  if (packagesToIgnore) {
+    return packagesToIgnore.split(',').map(function (packageName) {
+      return packageName.trim()
+    });
+  } else {
+    return []
+  }
 }
 
 function shouldIgnoreExport (exportName) {
