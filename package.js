@@ -17,7 +17,8 @@ Npm.depends({
   'mkdirp': '0.5.0',
   'glob': '3.2.9',
   'rimraf': '2.2.8',
-  'coffee-script': '1.7.1'
+  'coffee-script': '1.7.1',
+  'traceur': '0.0.53'
 })
 
 Package.onUse(function (api) {
@@ -66,6 +67,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'server/lib/runFileInContext.js',
     'server/lib/coffee-require.js',
+    'server/lib/jsHarmony-require.js',
     'server/lib/file-loader.js',
     'server/lib/html-scanner.js',
     'server/lib/load-order-sort.js',
