@@ -18,13 +18,15 @@ var fs = Npm.require('fs'),
 var jsHarmonyPreprocessor = function (options, content, file, done) {
 
   var traceurOptions = {
-    'sourceMaps': true
+    sourceMaps: true
   };
 
-  var result = traceur.compile(content, traceurOptions);
+  var result;
 
-  if (result.errors.length) {
-    return done(result.errors.join(os.EOL));
+  try {
+    result = traceur.compile(content, traceurOptions);
+  } catch (ex) {
+    return done(ex.toString().replace(/(\<compile-source\>)/g, "\n$1"));
   }
 
   var map;
