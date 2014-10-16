@@ -30,7 +30,8 @@ Package.onUse(function (api) {
   ], 'server')
 
   api.addFiles([
-    'lib/meteor.js'
+    'lib/meteor.js',
+    'lib/velocity.js'
   ], 'server')
 
   api.addFiles([
