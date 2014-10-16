@@ -7,8 +7,7 @@ Package.describe({
   name: 'sanjo:jasmine',
   summary: 'Easily use Jasmine in Meteor',
   version: '0.4.14',
-  git: 'https://github.com/Sanjo/meteor-jasmine.git',
-  debugOnly: true
+  git: 'https://github.com/Sanjo/meteor-jasmine.git'
 })
 
 Npm.depends({
@@ -18,7 +17,8 @@ Npm.depends({
   'mkdirp': '0.5.0',
   'glob': '3.2.9',
   'rimraf': '2.2.8',
-  'coffee-script': '1.7.1'
+  'coffee-script': '1.7.1',
+  'traceur': '0.0.66'
 })
 
 Package.onUse(function (api) {
@@ -68,6 +68,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'server/lib/runFileInContext.js',
     'server/lib/coffee-require.js',
+    'server/lib/jsHarmony-require.js',
     'server/lib/file-loader.js',
     'server/lib/html-scanner.js',
     'server/lib/load-order-sort.js',
