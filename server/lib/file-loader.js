@@ -115,7 +115,7 @@ function loadFile (target, context) {
 
   if (fs.existsSync(filename)) {
     ext = path.extname(filename)
-    if (target.indexOf('.next.js') > 0) {
+    if (/\.next\.js$/.test(target)) {
       DEBUG && console.log('loading es6 source file:', filename)
       jsHarmonyRequire(filename, context)
     }
