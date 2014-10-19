@@ -12,7 +12,7 @@ Package.describe({
 
 Npm.depends({
   'jasmine-core': '2.0.0',
-  'meteor-stubs': '0.0.5',
+  'meteor-stubs': '0.0.6',
   'component-mocker': '0.2.0',
   'mkdirp': '0.5.0',
   'glob': '3.2.9',
