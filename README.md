@@ -74,6 +74,17 @@ This pattern allows you to enable mocks only for specific tests and have a clean
 
 ### For sanjo:jasmine maintainers
 
+#### Testing
+
+We use spacejamio:munit with the BDD style for testing sanjo:jasmine.
+
+##### Running package unit tests
+
+```bash
+cd test-app
+meteor test-packages sanjo:jasmine
+```
+
 #### Publish a new version
 
 1. Increase the version in `package.js` (follow [Semantic Versioning conventions](http://semver.org/))
