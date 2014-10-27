@@ -87,6 +87,7 @@ _.extend(ServerUnitTestFramework.prototype, {
     globalContext.Meteor.isServer = true
     globalContext.Meteor.isClient = false
     globalContext.Meteor.settings = Meteor.settings
+    globalContext.Meteor.npmRequire = Meteor.npmRequire
 
     var context = vm.createContext(globalContext)
 
