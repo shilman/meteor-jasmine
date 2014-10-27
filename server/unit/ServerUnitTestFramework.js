@@ -31,7 +31,12 @@ _.extend(ServerUnitTestFramework.prototype, {
   start: function () {
     var testFilesCursor = VelocityTestFiles.find({
       targetFramework: this.name,
-      relativePath: {$nin: ['jasmine/server/unit/packageMocksSpec.js', 'jasmine/server/unit/package-stubs.js']}
+      relativePath: {
+        $nin: [
+          'tests/jasmine/server/unit/packageMocksSpec.js',
+          'tests/jasmine/server/unit/package-stubs.js'
+        ]
+      }
     });
 
     var _runTests  = _.throttle(Meteor.bindEnvironment(this.runTests.bind(this),
