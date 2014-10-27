@@ -59,7 +59,7 @@ function getJsFiles (options) {
  * @return {Array.<String>} list of filenames
  */
 function getCoffeeFiles (options) {
-  var files = glob.sync('**/*.coffee', { cwd: PWD })
+  var files = glob.sync('**/*.{coffee,litcoffee,coffee.md}', { cwd: PWD })
 
   return filterFiles(files, options)
 }
@@ -102,7 +102,7 @@ function filterFiles (files, options) {
 /**
  * Load and execute the target source file.
  * Will use node's 'require' if source file has a .js extension or
- * karma's coffeescript preprocessor if a .coffee extension
+ * karma's coffeescript preprocessor if a .coffee/.litcoffee/.coffee.md extension
  *
  * @method loadFile
  * @param {String} target file path to load, relative to meteor app
@@ -118,11 +118,10 @@ function loadFile (target, context) {
     if (/\.next\.js$/.test(target)) {
       DEBUG && console.log('loading es6 source file:', filename)
       jsHarmonyRequire(filename, context)
-    }
-    else if ('.js' === ext) {
+    } else if ('.js' === ext) {
       DEBUG && console.log('loading source file:', filename)
       runFileInContext(filename, context)
-    } else if ('.coffee' === ext) {
+    } else if (/\.(coffee|litcoffee|coffee\.md)/.test(ext)) {
       DEBUG && console.log('loading source file:', filename)
       coffeeRequire(filename, context)
     }

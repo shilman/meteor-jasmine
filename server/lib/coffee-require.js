@@ -41,7 +41,7 @@ var coffeePreprocessor = function (options, content, file, done) {
     map = JSON.parse(result.v3SourceMap)
     map.sources[0] = path.basename(file.originalPath)
     map.sourcesContent = [content]
-    map.file = path.basename(file.originalPath.replace(/\.coffee$/, '.js'))
+    map.file = path.basename(file.originalPath.replace(/\.(coffee|litcoffee|coffee\.md)$/, '.js'))
     file.sourceMap = map
     dataUri = 'data:application/json;charset=utf-8;base64,' + new Buffer(JSON.stringify(map)).toString('base64')
     done(null, result.js + '\n//@ sourceMappingURL=' + dataUri + '\n')
