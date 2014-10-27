@@ -6,7 +6,8 @@ var path = Npm.require('path'),
 stubLoader = {
   /**
    * Load user-defined stubs.  Stub files should be located in the 'tests'
-   * directory and end in `-stub.js`, `-stubs.js`, `-stub.coffee`, or `-stubs.coffee`.
+   * directory and end in `-stub.js`, `-stubs.js`, `-stub.coffee`, `-stubs.coffee`,
+   * '-stub.litcoffee', '-stubs.litcoffee', '-stub.coffee.md', or '-stubs.coffee.md'.
    *
    * Example:
    *   tests/custom-stub.js
@@ -21,7 +22,7 @@ stubLoader = {
   },
 
   getStubFiles: function (basePath) {
-    var files = glob.sync('**/*-stub{s,}.{js,coffee}', { cwd: basePath })
+    var files = glob.sync('**/*-stub{s,}.{js,coffee,litcoffee,coffee.md}', { cwd: basePath })
     files = files.map(function (file) {
       return path.join(basePath, file)
     })
