@@ -121,7 +121,7 @@ function loadFile (target, context) {
     } else if ('.js' === ext) {
       DEBUG && console.log('loading source file:', filename)
       runFileInContext(filename, context)
-    } else if (/\.(coffee|litcoffee|coffee\.md)/.test(ext)) {
+    } else if (/\.(coffee|litcoffee|coffee\.md)$/.test(target)) {
       DEBUG && console.log('loading source file:', filename)
       coffeeRequire(filename, context)
     }
