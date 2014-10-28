@@ -147,6 +147,6 @@ _.extend(ServerUnitTestFramework.prototype, {
   },
 
   _reportResults: function () {
-    Meteor.call('completed', {framework: this.name})
+    Meteor.call('velocity/reports/completed', {framework: this.name})
   }
 })

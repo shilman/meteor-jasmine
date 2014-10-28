@@ -7,17 +7,17 @@ if (Meteor.isServer) {
   var consoleClientReporter;
 
   Meteor.methods({
-    "jasmineStartedConsumer": function () {
+    'jasmine/startedConsumer': function () {
       consoleClientReporter = getJasmineConsoleReporter("integration", true)
       consoleClientReporter.jasmineStarted();
       return consoleClientReporter.id;
     },
-    "jasmineDoneConsumer": function (id) {
+    'jasmine/doneConsumer': function (id) {
       check(id, Match.OneOf(null, Match.Integer))
       // id prevents multiple postings to to the same console from various runs
       consoleClientReporter.jasmineDone()
     },
-    "specDoneConsumer": function (result, id) {
+    'jasmine/specDoneConsumer': function (result, id) {
       check(result, Object)
       check(id, Match.OneOf(null, Match.Integer))
       consoleClientReporter.specDone(result)
@@ -67,6 +67,8 @@ _.extend(ClientIntegrationTestFramework.prototype, {
   },
 
   runTests: function () {
+    var self = this
+
     /**
      * Since this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.
      */
@@ -100,20 +102,19 @@ _.extend(ClientIntegrationTestFramework.prototype, {
       timer: new this.jasmine.Timer()
     })
 
-    var that = this;
     var currentId;
 
     var serverReporter = {
       jasmineStarted: function() {
-        window.ddpParentConnection.call("jasmineStartedConsumer", function(err, result) {
+        window.ddpParentConnection.call("jasmine/startedConsumer", function(err, result) {
           currentId = result;
         });
       },
       jasmineDone: function () {
-        window.ddpParentConnection.call("jasmineDoneConsumer", currentId)
+        window.ddpParentConnection.call("jasmine/doneConsumer", currentId)
       },
       specDone: function (result) {
-        window.ddpParentConnection.call("specDoneConsumer", result, currentId)
+        window.ddpParentConnection.call("jasmine/specDoneConsumer", result, currentId)
       }
     }
 
@@ -151,7 +152,7 @@ _.extend(ClientIntegrationTestFramework.prototype, {
     window.jasmineWebClientTestsComplete = false
 
     Meteor.startup(function(){
-      Meteor.call('jasmineIsMirror', function(error, mirrorInfo) {
+      Meteor.call('jasmine/isMirror', function(error, mirrorInfo) {
         if (error) {
           throw error
         } else if (mirrorInfo.isMirror) {
@@ -162,43 +163,51 @@ _.extend(ClientIntegrationTestFramework.prototype, {
               env.execute()
           }, 0)
         } else {
-          var insertMirrorIframe = function (mirrorUrl) {
-            var iframe = document.createElement('iframe')
-            iframe.src = mirrorUrl + "?jasmine=true"
-            // Make the iFrame invisible
-            iframe.style.width = 0
-            iframe.style.height = 0
-            iframe.style.border = 0
-            document.body.appendChild(iframe)
-          }
+          Tracker.autorun(function (computation) {
+            var clientIntegrationTestsExist = VelocityTestFiles.find(
+                {targetFramework: self.name}).count() > 0
 
-          var hasMirrorStartedCheckCallback = function (error, mirrorInfo) {
-            if (error) {
-              throw error
-            } else {
-              if (mirrorInfo) {
-                insertMirrorIframe(mirrorInfo.rootUrl)
-              } else {
-                startHasMirrorStartedTimeout()
-              }
+            if (clientIntegrationTestsExist) {
+              computation.stop()
+
+              var insertMirrorIframe = _.once(function (mirrorInfo) {
+                var iframe = document.createElement('iframe')
+                iframe.src = mirrorInfo.rootUrl + "?jasmine=true"
+                // Make the iFrame invisible
+                iframe.style.width = 0
+                iframe.style.height = 0
+                iframe.style.border = 0
+                document.body.appendChild(iframe)
+              })
+
+              Meteor.call(
+                'velocity/mirrors/request',
+                {framework: 'jasmine'},
+                function (error, requestId) {
+                  if (error) {
+                    logError(error)
+                  } else {
+                    var mirrorQuery = VelocityMirrors.find({requestId: requestId})
+                    if (mirrorQuery.count() > 0) {
+                      var mirrorInfo = mirrorQuery.fetch()[0];
+                      insertMirrorIframe(mirrorInfo);
+                    } else {
+                      mirrorQuery.observe({
+                        added: insertMirrorIframe,
+                        changed: insertMirrorIframe
+                      })
+                    }
+                  }
+                }
+              )
             }
-          }
-
-          var hasMirrorStartedCheck = function () {
-            Meteor.call('jasmineMirrorInfo', hasMirrorStartedCheckCallback)
-          }
-
-          var startHasMirrorStartedTimeout = function () {
-            return Meteor.setTimeout(hasMirrorStartedCheck, 1000)
-          }
-
-          startHasMirrorStartedTimeout()
+          })
         }
       })
     })
   },
 
   _reportResults: function () {
-    Meteor.call('completed', {framework: this.name})
+    Meteor.call('velocity/reports/completed', {framework: this.name})
   }
 })

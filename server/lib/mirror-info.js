@@ -1,20 +1,8 @@
-/* global
-  VelocityMirrors: false
- */
-
 Meteor.methods({
-  jasmineIsMirror: function () {
+  'jasmine/isMirror': function () {
     return {
       isMirror: process.env.IS_MIRROR,
       parentUrl: process.env.PARENT_URL
     }
   }
 })
-
-if (!process.env.IS_MIRROR) {
-  Meteor.methods({
-    jasmineMirrorInfo: function () {
-      return VelocityMirrors.findOne({name: {$in: ['shared', 'mocha-web']}})
-    }
-  })
-}

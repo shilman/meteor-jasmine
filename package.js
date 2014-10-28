@@ -23,16 +23,16 @@ Npm.depends({
 })
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@0.9.1");
+  api.versionsFrom("METEOR@1.0");
   api.use('underscore', ['server', 'client'])
   api.use([
-    'velocity:core@0.2.14',
+    'velocity:core@1.0.0-rc.1',
+    'velocity:shim@0.0.2',
     'alanning:package-stubber@0.0.9'
   ], 'server')
 
   api.addFiles([
-    'lib/meteor.js',
-    'lib/velocity.js'
+    'lib/meteor.js'
   ], 'server')
 
   api.addFiles([
