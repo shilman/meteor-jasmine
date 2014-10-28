@@ -164,8 +164,8 @@ _.extend(ClientIntegrationTestFramework.prototype, {
           }, 0)
         } else {
           Tracker.autorun(function (computation) {
-            var clientIntegrationTestsExist = Package['velocity:core'].VelocityTestFiles
-                .find({targetFramework: self.name}).count() > 0
+            var clientIntegrationTestsExist = VelocityTestFiles.find(
+                {targetFramework: self.name}).count() > 0
 
             if (clientIntegrationTestsExist) {
               computation.stop()
