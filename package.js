@@ -23,7 +23,7 @@ Npm.depends({
 })
 
 Package.onUse(function (api) {
-  api.versionsFrom("METEOR@0.9.4");
+  api.versionsFrom("METEOR@1.0");
   api.use('underscore', ['server', 'client'])
   api.use([
     'velocity:core@1.0.0-rc.1',
