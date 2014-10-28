@@ -182,7 +182,7 @@ _.extend(ClientIntegrationTestFramework.prototype, {
 
               Meteor.call(
                 'velocity/mirrors/request',
-                {framework: 'jasmine'},
+                {framework: 'jasmine', rootUrlPath: '/?jasmine=true'},
                 function (error, requestId) {
                   if (error) {
                     logError(error)
