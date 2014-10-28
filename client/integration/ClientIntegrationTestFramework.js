@@ -7,17 +7,17 @@ if (Meteor.isServer) {
   var consoleClientReporter;
 
   Meteor.methods({
-    "jasmineStartedConsumer": function () {
+    'jasmine/startedConsumer': function () {
       consoleClientReporter = getJasmineConsoleReporter("integration", true)
       consoleClientReporter.jasmineStarted();
       return consoleClientReporter.id;
     },
-    "jasmineDoneConsumer": function (id) {
+    'jasmine/doneConsumer': function (id) {
       check(id, Match.OneOf(null, Match.Integer))
       // id prevents multiple postings to to the same console from various runs
       consoleClientReporter.jasmineDone()
     },
-    "specDoneConsumer": function (result, id) {
+    'jasmine/specDoneConsumer': function (result, id) {
       check(result, Object)
       check(id, Match.OneOf(null, Match.Integer))
       consoleClientReporter.specDone(result)
@@ -106,15 +106,15 @@ _.extend(ClientIntegrationTestFramework.prototype, {
 
     var serverReporter = {
       jasmineStarted: function() {
-        window.ddpParentConnection.call("jasmineStartedConsumer", function(err, result) {
+        window.ddpParentConnection.call("jasmine/startedConsumer", function(err, result) {
           currentId = result;
         });
       },
       jasmineDone: function () {
-        window.ddpParentConnection.call("jasmineDoneConsumer", currentId)
+        window.ddpParentConnection.call("jasmine/doneConsumer", currentId)
       },
       specDone: function (result) {
-        window.ddpParentConnection.call("specDoneConsumer", result, currentId)
+        window.ddpParentConnection.call("jasmine/specDoneConsumer", result, currentId)
       }
     }
 
