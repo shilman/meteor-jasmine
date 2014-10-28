@@ -152,7 +152,7 @@ _.extend(ClientIntegrationTestFramework.prototype, {
     window.jasmineWebClientTestsComplete = false
 
     Meteor.startup(function(){
-      Meteor.call('jasmineIsMirror', function(error, mirrorInfo) {
+      Meteor.call('jasmine/isMirror', function(error, mirrorInfo) {
         if (error) {
           throw error
         } else if (mirrorInfo.isMirror) {
@@ -181,7 +181,7 @@ _.extend(ClientIntegrationTestFramework.prototype, {
               })
 
               Meteor.call(
-                'requestMirror',
+                'velocity/mirrors/request',
                 {framework: 'jasmine'},
                 function (error, requestId) {
                   if (error) {
@@ -208,6 +208,6 @@ _.extend(ClientIntegrationTestFramework.prototype, {
   },
 
   _reportResults: function () {
-    Meteor.call('completed', {framework: this.name})
+    Meteor.call('velocity/reports/completed', {framework: this.name})
   }
 })
