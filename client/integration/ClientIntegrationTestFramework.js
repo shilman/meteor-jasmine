@@ -163,43 +163,21 @@ _.extend(ClientIntegrationTestFramework.prototype, {
               env.execute()
           }, 0)
         } else {
+          var insertMirrorIframe = _.once(function (mirrorInfo) {
+            var iframe = document.createElement('iframe')
+            iframe.src = mirrorInfo.rootUrl
+            // Make the iFrame invisible
+            iframe.style.width = 0
+            iframe.style.height = 0
+            iframe.style.border = 0
+            document.body.appendChild(iframe)
+          })
+
           Tracker.autorun(function (computation) {
-            var clientIntegrationTestsExist = VelocityTestFiles.find(
-                {targetFramework: self.name}).count() > 0
-
-            if (clientIntegrationTestsExist) {
+            var mirror = VelocityMirrors.findOne({framework: self.name})
+            if (mirror) {
               computation.stop()
-
-              var insertMirrorIframe = _.once(function (mirrorInfo) {
-                var iframe = document.createElement('iframe')
-                iframe.src = mirrorInfo.rootUrl + "?jasmine=true"
-                // Make the iFrame invisible
-                iframe.style.width = 0
-                iframe.style.height = 0
-                iframe.style.border = 0
-                document.body.appendChild(iframe)
-              })
-
-              Meteor.call(
-                'velocity/mirrors/request',
-                {framework: 'jasmine', rootUrlPath: '/?jasmine=true'},
-                function (error, requestId) {
-                  if (error) {
-                    logError(error)
-                  } else {
-                    var mirrorQuery = VelocityMirrors.find({requestId: requestId})
-                    if (mirrorQuery.count() > 0) {
-                      var mirrorInfo = mirrorQuery.fetch()[0];
-                      insertMirrorIframe(mirrorInfo);
-                    } else {
-                      mirrorQuery.observe({
-                        added: insertMirrorIframe,
-                        changed: insertMirrorIframe
-                      })
-                    }
-                  }
-                }
-              )
+              insertMirrorIframe(mirror)
             }
           })
         }

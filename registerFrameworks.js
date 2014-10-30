@@ -1,5 +1,5 @@
 
-var frameworks = {
+frameworks = {
   //serverIntegration: new ServerIntegrationTestFramework(),
   clientIntegration: new ClientIntegrationTestFramework(),
   //clientUnit: new ClientUnitTestFramework(),

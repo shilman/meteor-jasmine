@@ -24,7 +24,10 @@ Npm.depends({
 
 Package.onUse(function (api) {
   api.versionsFrom("METEOR@1.0");
-  api.use('underscore', ['server', 'client'])
+  api.use([
+    'underscore',
+    'tracker'
+  ], ['server', 'client'])
   api.use([
     'velocity:core@1.0.0-rc.1',
     'velocity:shim@0.0.2',
@@ -59,6 +62,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     // set up server-side Meteor methods
+    'client/integration/mirrorStarter.js',
     'server/lib/mirror-info.js'
   ], 'server')
 
