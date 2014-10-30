@@ -1,10 +1,17 @@
 var requestMirror = _.once(function () {
+  var options = {
+    framework: frameworks.clientIntegration.name,
+    rootUrlPath: '/?jasmine=true'
+  }
+
+  var customPort = parseInt(process.env.JASMINE_MIRROR_PORT, 10)
+  if (_.isNumber(customPort)) {
+    options.port = customPort
+  }
+
   Meteor.call(
     'velocity/mirrors/request',
-    {
-      framework: frameworks.clientIntegration.name,
-      rootUrlPath: '/?jasmine=true'
-    },
+    options,
     function (error) {
       if (error) {
         logError(error)
