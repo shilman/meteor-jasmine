@@ -29,7 +29,7 @@ Package.onUse(function (api) {
     'tracker'
   ], ['server', 'client'])
   api.use([
-    'velocity:core@1.0.0-rc.1',
+    'velocity:core@1.0.0-rc.2',
     'velocity:shim@0.0.2',
     'alanning:package-stubber@0.0.9'
   ], 'server')
