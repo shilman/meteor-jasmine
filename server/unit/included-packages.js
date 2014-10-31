@@ -4,7 +4,5 @@ packagesToIncludeInUnitTests = [
   'lodash',
   'stevezhu:lodash',
   'underscore',
-  'digilord:sugarjs',
-  'check',
-  'aldeed:simple-schema'
+  'digilord:sugarjs'
 ]

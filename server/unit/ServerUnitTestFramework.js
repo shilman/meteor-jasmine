@@ -67,13 +67,7 @@ _.extend(ServerUnitTestFramework.prototype, {
         Meteor: {
           settings: Meteor.settings
         }
-      },
-      // Makes type comparison work with mixed VM and not VM code (e.g. check package)
-      String: String,
-      Number: Number,
-      Boolean: Boolean,
-      Object: Object,
-      undefined: undefined
+      }
     }
 
     // Add all available packages that should be included
