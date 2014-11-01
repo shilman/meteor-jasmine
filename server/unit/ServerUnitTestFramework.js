@@ -8,9 +8,6 @@ var path = Npm.require('path'),
     ComponentMocker = Npm.require('component-mocker'),
     jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js')
 
-// MeteorStubs
-Npm.require('meteor-stubs')
-
 ServerUnitTestFramework = function (options) {
   options = options || {}
 

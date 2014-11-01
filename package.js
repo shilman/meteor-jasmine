@@ -13,7 +13,6 @@ Package.describe({
 
 Npm.depends({
   'jasmine-core': '2.0.0',
-  'meteor-stubs': '0.0.6',
   'component-mocker': '0.2.0',
   'mkdirp': '0.5.0',
   'glob': '3.2.9',
@@ -31,6 +30,7 @@ Package.onUse(function (api) {
   api.use([
     'velocity:core@1.0.0-rc.2',
     'velocity:shim@0.0.2',
+    'velocity:meteor-stubs@1.0.0',
     'alanning:package-stubber@0.0.9'
   ], 'server')
 
@@ -52,7 +52,6 @@ Package.onUse(function (api) {
   // Client side integration testing
   api.addFiles([
     '.npm/package/node_modules/component-mocker/index.js',
-    '.npm/package/node_modules/meteor-stubs/index.js',
     '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
     '.npm/package/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js',
     'client/integration/ClientIntegrationTestFramework.js',
