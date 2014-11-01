@@ -4,7 +4,7 @@
 
 var path = Npm.require('path'),
     util = Npm.require('util'),
-    vm = Npm.require('vm'),
+    Contextify = Npm.require('contextify'),
     ComponentMocker = Npm.require('component-mocker'),
     jasmineRequire = Npm.require('jasmine-core/lib/jasmine-core/jasmine.js')
 
@@ -52,7 +52,7 @@ _.extend(ServerUnitTestFramework.prototype, {
 
     var testFilePath = path.join(Velocity.getTestsPath(), 'jasmine', 'server', 'unit')
 
-    var globalContext = {
+    var context = {
       process: process,
       console: console,
       Buffer: Buffer,
@@ -72,26 +72,26 @@ _.extend(ServerUnitTestFramework.prototype, {
       var packageGlobals = Package[packageName]
       if (packageGlobals) {
         _.forEach(packageGlobals, function (packageGlobal, packageGlobalName) {
-          if (!globalContext[packageGlobalName]) {
-            globalContext[packageGlobalName] = packageGlobal
+          if (!context[packageGlobalName]) {
+            context[packageGlobalName] = packageGlobal
           }
         })
       }
     })
 
-    globalContext.global = globalContext
-    _.extend(globalContext, jasmineInterface)
+    _.extend(context, jasmineInterface)
 
     // Need to install Meteor here so the app code files don't throw an error
     // when loaded
-    MeteorStubs.install(globalContext)
+    MeteorStubs.install(context)
 
-    globalContext.Meteor.isServer = true
-    globalContext.Meteor.isClient = false
-    globalContext.Meteor.settings = Meteor.settings
-    globalContext.Meteor.npmRequire = Meteor.npmRequire
+    context.Meteor.isServer = true
+    context.Meteor.isClient = false
+    context.Meteor.settings = Meteor.settings
+    context.Meteor.npmRequire = Meteor.npmRequire
 
-    var context = vm.createContext(globalContext)
+    Contextify(context)
+    context.global = context.getGlobal()
 
     // Load mock helper
     runCodeInContext(
@@ -134,13 +134,18 @@ _.extend(ServerUnitTestFramework.prototype, {
       mode: "Server Unit",
       framework: this.name,
       env: env,
-      onComplete: this._reportResults.bind(this),
+      onComplete: this._onComplete.bind(this, context),
       timer: new jasmine.Timer()
     })
 
     env.addReporter(consoleReporter)
     env.addReporter(velocityReporter)
     env.execute()
+  },
+
+  _onComplete: function (context) {
+    this._reportResults()
+    context.dispose()
   },
 
   _reportResults: function () {

@@ -18,7 +18,8 @@ Npm.depends({
   'glob': '3.2.9',
   'rimraf': '2.2.8',
   'coffee-script': '1.7.1',
-  'traceur': '0.0.66'
+  'traceur': '0.0.66',
+  'contextify': '0.1.9'
 })
 
 Package.onUse(function (api) {
