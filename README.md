@@ -13,8 +13,8 @@ You can nest them inside this folder how you want.
 ### Installation
 
 ```bash
-meteor add sanjo:jasmine
-meteor add velocity:html-reporter
+meteor add sanjo:jasmine@0.5.0-rc.4
+meteor add velocity:html-reporter@0.3.0-rc.3
 ```
 
 ### Examples and Tutorials
