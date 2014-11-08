@@ -6,10 +6,6 @@ and unit tests that run in a mocked server environment.
 You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction.html)
 and the same syntax for your tests.
 
-Place your client integration tests in the folder `tests/jasmine/client/integration/`.
-Place your server unit tests in the folder `tests/jasmine/server/unit/`
-You can nest them inside this folder how you want.
-
 ### Installation
 
 ```bash
@@ -21,6 +17,36 @@ meteor add velocity:html-reporter@0.3.0-rc.3
 
 * [Integration and Unit tests for a refactored version of the Leaderboard example (by Jonas Aschenbrenner)](https://github.com/meteor-velocity/velocity-example/tree/jasmine-only/tests/jasmine/).
 * [Comprehensive tutorial about testing all common aspects of a Meteor app (by Tomas Trescak)](http://doctorllama.wordpress.com/2014/09/22/bullet-proof-internationalised-meteor-applications-with-velocity-unit-testing-integration-testing-and-jasmine/)
+
+### Testing modes
+
+Each testing mode has different characteristics. Each testing mode has an own folder.
+
+#### Server
+
+##### Server Unit Test Mode
+
+* You can unit test server app code in this mode.
+* The tests run isolated from your app.
+* The Meteor API and all packages are stubbed in this mode.
+* Place your server unit tests in the folder `tests/jasmine/server/unit/` or a subfolder of it.
+
+##### Server Integration Test Mode
+
+Not available yet. Will be added in the near future.
+
+#### Client
+
+##### Client Unit Test Mode
+
+Not available yet. Will be added in the near future.
+
+##### Client Integration Test Mode
+
+* You can test client code in this mode.
+* The tests are executed directly inside the browser in a copy of your app.
+* Nothing is automatically stubbed.
+* Place your client integration tests in the folder `tests/jasmine/client/integration/` or a subfolder of it.
 
 ### Stubs
 
