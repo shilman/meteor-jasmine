@@ -36,8 +36,8 @@ _.extend(ServerUnitTestFramework.prototype, {
       }
     });
 
-    var _runTests  = _.throttle(Meteor.bindEnvironment(this.runTests.bind(this),
-      '[JasmineTestFramework.start.runTests]'), 100)
+    var _runTests  = _.debounce(Meteor.bindEnvironment(this.runTests.bind(this),
+      '[JasmineTestFramework.start.runTests]'), 200)
 
     this._observer = testFilesCursor.observe({
       added: _runTests,
