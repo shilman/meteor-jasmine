@@ -30,7 +30,7 @@ ClientIntegrationTestFramework = function (options) {
 
   _.defaults(options, {
     name: 'jasmine-client-integration',
-    regex: 'jasmine/client/integration/.+\\.(js|coffee|litcoffee|coffee\\.md)$',
+    regex: '^tests/jasmine/client/integration/.+\\.(js|coffee|litcoffee|coffee\\.md)$',
     jasmineRequire: Meteor.isClient ? window.jasmineRequire : null
   })
 

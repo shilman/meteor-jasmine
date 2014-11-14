@@ -13,7 +13,7 @@ ServerUnitTestFramework = function (options) {
 
   _.defaults(options, {
     name: 'jasmine-server-unit',
-    regex: 'jasmine/server/unit/.+\\.(js|coffee|litcoffee|coffee\\.md)$',
+    regex: '^tests/jasmine/server/unit/.+\\.(js|coffee|litcoffee|coffee\\.md)$',
     //regex: 'jasmine/.+\\.(js|coffee|litcoffee|coffee\\.md)$',
     jasmineRequire: jasmineRequire
   })
