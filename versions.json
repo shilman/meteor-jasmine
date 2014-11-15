@@ -81,6 +81,18 @@
       "1.0.1"
     ],
     [
+      "sanjo:karma",
+      "0.12.24_1"
+    ],
+    [
+      "sanjo:karma-chrome-launcher",
+      "0.1.5_1"
+    ],
+    [
+      "sanjo:karma-jasmine",
+      "0.2.3"
+    ],
+    [
       "tracker",
       "1.0.3"
     ],

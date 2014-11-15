@@ -39,7 +39,13 @@ Not available yet. Will be added in the near future.
 
 ##### Client Unit Test Mode
 
-Not available yet. Will be added in the near future.
+Still in development. Currently only available in the 0.6.0-rc.1
+
+* You can test client code.
+* The tests are executed directly inside the browser.
+* Nothing is automatically stubbed.
+* Place your client unit tests in the folder `tests/jasmine/client/unit/` or a subfolder of it.
+
 
 ##### Client Integration Test Mode
 

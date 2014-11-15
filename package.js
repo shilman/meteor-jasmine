@@ -31,7 +31,10 @@ Package.onUse(function (api) {
     'velocity:core@1.0.0-rc.5',
     'velocity:shim@0.0.2',
     'velocity:meteor-stubs@1.0.0',
-    'alanning:package-stubber@0.0.9'
+    'alanning:package-stubber@0.0.9',
+    'sanjo:karma@0.12.24_1',
+    'sanjo:karma-jasmine@0.2.3',
+    'sanjo:karma-chrome-launcher@0.1.5_1'
   ], 'server')
 
   api.addFiles([
@@ -81,6 +84,7 @@ Package.onUse(function (api) {
     'server/unit/included-packages.js',
     'server/unit/mock-generator.js',
     'server/unit/ServerUnitTestFramework.js',
+    'client/unit/ClientUnitTestFramework.js',
     'client/integration/ClientIntegrationTestFramework.js',
 
     'server/lib/get-files.js',
@@ -95,7 +99,9 @@ Package.onUse(function (api) {
     'server/unit/package-stubs.js.tpl',
     'server/unit/metadata-reader.js.tpl',
     'lib/mock.js',
-    'server/lib/contextSpec.js'
+    'server/lib/contextSpec.js',
+    'client/unit/assets/__meteor_runtime_config__.js',
+    'client/unit/assets/jasmine-jquery.js'
   ], 'server', {isAsset: true})
 
 })
