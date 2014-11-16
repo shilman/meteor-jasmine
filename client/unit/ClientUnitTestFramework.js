@@ -20,7 +20,7 @@ _.extend(ClientUnitTestFramework.prototype, {
       this._getStubFiles(),
       this._getTestFiles()
     )
-    console.log(JSON.stringify(files, null, '  '))
+
     var options = {
       port: 5050,
       basePath: Velocity.getAppPath(),
@@ -43,7 +43,6 @@ _.extend(ClientUnitTestFramework.prototype, {
     ]
   },
   _getAppFiles: function () {
-    console.log(JSON.stringify(WebApp.clientPrograms['web.browser'].manifest, null, '  '))
     return _.chain(WebApp.clientPrograms['web.browser'].manifest)
       .filter(function (file) {
         return file.type === 'js' // TODO: Remove and serve all types correctly
