@@ -32,7 +32,7 @@ Package.onUse(function (api) {
     'velocity:shim@0.0.2',
     'velocity:meteor-stubs@1.0.0',
     'alanning:package-stubber@0.0.9',
-    'sanjo:karma@0.12.24_1',
+    'sanjo:karma@0.12.24_2',
     'sanjo:karma-jasmine@0.2.3',
     'sanjo:karma-chrome-launcher@0.1.5_1'
   ], 'server')
@@ -100,7 +100,9 @@ Package.onUse(function (api) {
     'server/unit/metadata-reader.js.tpl',
     'lib/mock.js',
     'server/lib/contextSpec.js',
+    'lib/VelocityTestReporter.js',
     'client/unit/assets/__meteor_runtime_config__.js',
+    'client/unit/assets/adapter.js',
     'client/unit/assets/jasmine-jquery.js'
   ], 'server', {isAsset: true})
 

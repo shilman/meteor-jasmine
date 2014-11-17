@@ -21,7 +21,7 @@ _.extend(ClientUnitTestFramework.prototype, {
       this._getTestFiles()
     )
 
-    var options = {
+    var startOptions = {
       port: 5050,
       basePath: Velocity.getAppPath(),
       frameworks: ['jasmine'],
@@ -30,16 +30,19 @@ _.extend(ClientUnitTestFramework.prototype, {
         'karma-jasmine',
         'karma-chrome-launcher'
       ],
-      files: files
+      files: files,
+      client: {
+        args: [Meteor.absoluteUrl()]
+      },
+      browserDisconnectTimeout: 10000,
+      browserNoActivityTimeout: 15000,
+      singleRun: !!process.env.JASMINE_SINGLE_RUN
     }
-    Karma.server.start(options)
-    Meteor.setTimeout(function () {
-      Karma.runner.run(options);
-    }, 10000);
+    Karma.server.start(startOptions)
   },
   _getPreAppFiles: function () {
     return [
-      this._getAssetPath('__meteor_runtime_config__.js')
+      this._getAssetPath('client/unit/assets/__meteor_runtime_config__.js')
     ]
   },
   _getAppFiles: function () {
@@ -62,7 +65,9 @@ _.extend(ClientUnitTestFramework.prototype, {
   },
   _getHelperFiles: function () {
     return [
-      this._getAssetPath('jasmine-jquery.js')
+      this._getAssetPath('lib/VelocityTestReporter.js'),
+      this._getAssetPath('client/unit/assets/adapter.js'),
+      this._getAssetPath('client/unit/assets/jasmine-jquery.js')
     ]
   },
   _getStubFiles: function () {
@@ -78,7 +83,7 @@ _.extend(ClientUnitTestFramework.prototype, {
     ]
   },
   _getAssetPath: function (fileName) {
-    var assetsPath = '.meteor/local/build/programs/server/assets/packages/sanjo_jasmine/client/unit/assets/'
+    var assetsPath = '.meteor/local/build/programs/server/assets/packages/sanjo_jasmine/'
     return assetsPath + fileName;
   },
   generateKarmaConfig: function () {
