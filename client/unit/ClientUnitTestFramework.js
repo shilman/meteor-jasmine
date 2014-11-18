@@ -87,7 +87,7 @@ _.extend(ClientUnitTestFramework.prototype, {
   },
   _getStubFiles: function () {
     return [
-
+      'tests/jasmine/client/unit/**/*-{stub,stubs}.{js,coffee,litcoffee,coffee.md}'
     ]
   },
   _getTestFiles: function () {
