@@ -1,3 +1,5 @@
+var freeport = Meteor.wrapAsync(Npm.require('freeport'))
+
 ClientUnitTestFramework = function (options) {
   options = options || {}
 
@@ -22,7 +24,7 @@ _.extend(ClientUnitTestFramework.prototype, {
     )
 
     var startOptions = {
-      port: 5050,
+      port: freeport(),
       basePath: Velocity.getAppPath(),
       frameworks: ['jasmine'],
       browsers: ['Chrome'],
