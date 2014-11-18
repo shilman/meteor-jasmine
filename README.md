@@ -1,10 +1,7 @@
 # jasmine
 
-Easily run Jasmine browser and server tests.
-Supports client tests that run in the browser with the app context
-and unit tests that run in a mocked server environment.
-You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction.html)
-and the same syntax for your tests.
+Easily write and run Jasmine client and server unit and integration tests.
+You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction.html).
 
 ### Installation
 
@@ -26,7 +23,7 @@ Each testing mode has different characteristics. Each testing mode has an own fo
 
 ##### Server Unit Test Mode
 
-* You can unit test server app code in this mode.
+* You can unit test server app code.
 * The tests run isolated from your app.
 * The Meteor API and all packages are stubbed in this mode.
 * Place your server unit tests in the folder `tests/jasmine/server/unit/` or a subfolder of it.
@@ -39,20 +36,22 @@ Not available yet. Will be added in the near future.
 
 ##### Client Unit Test Mode
 
-Still in development. Currently only available in the 0.6.0-rc.1
-
 * You can test client code.
 * The tests are executed directly inside the browser.
 * Nothing is automatically stubbed.
 * Place your client unit tests in the folder `tests/jasmine/client/unit/` or a subfolder of it.
 
+> __Note:__ Tests currently only run in Google Chrome. If you need support for another Browser please [open an issue](https://github.com/Sanjo/meteor-jasmine/issues/new).
 
 ##### Client Integration Test Mode
 
-* You can test client code in this mode.
+* You can test client code.
 * The tests are executed directly inside the browser in a copy of your app.
 * Nothing is automatically stubbed.
 * Place your client integration tests in the folder `tests/jasmine/client/integration/` or a subfolder of it.
+
+> __Tip:__ Use this mode when you want to test the communication between client and server.
+> In other cases you should probably use the Client Unit Test mode.
 
 ### Stubs
 
