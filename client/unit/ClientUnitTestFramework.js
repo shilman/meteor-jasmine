@@ -28,7 +28,8 @@ _.extend(ClientUnitTestFramework.prototype, {
       browsers: ['Chrome'],
       plugins: [
         'karma-jasmine',
-        'karma-chrome-launcher'
+        'karma-chrome-launcher',
+        'karma-coffee-preprocessor'
       ],
       files: files,
       client: {
@@ -36,7 +37,21 @@ _.extend(ClientUnitTestFramework.prototype, {
       },
       browserDisconnectTimeout: 10000,
       browserNoActivityTimeout: 15000,
-      singleRun: !!process.env.JASMINE_SINGLE_RUN
+      singleRun: !!process.env.JASMINE_SINGLE_RUN,
+
+      preprocessors: {
+        '**/*.{coffee,litcoffee,coffee.md}': ['coffee']
+      },
+
+      coffeePreprocessor: {
+        options: {
+          bare: true,
+          sourceMap: true
+        },
+        transformPath: function (path) {
+          return path.replace(/\.(coffee|litcoffee|coffee\\.md)$/, '.js');
+        }
+      }
     }
     Karma.server.start(startOptions)
   },
