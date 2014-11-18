@@ -10,6 +10,11 @@ meteor add sanjo:jasmine
 meteor add velocity:html-reporter@0.3.0-rc.3
 ```
 
+### Usage
+
+Tests run automatically while the app runs in development mode locally.
+You can see the test results in the terminal and in the html-reporter overlay.
+
 ### Examples and Tutorials
 
 * [Integration and Unit tests for a refactored version of the Leaderboard example (by Jonas Aschenbrenner)](https://github.com/meteor-velocity/velocity-example/tree/jasmine-only/tests/jasmine/).
@@ -52,6 +57,14 @@ Not available yet. Will be added in the near future.
 
 > __Tip:__ Use this mode when you want to test the communication between client and server.
 > In other cases you should probably use the Client Unit Test mode.
+
+### Running tests once (for Continuous Integration)
+
+Use the commmand:
+
+```javascript
+JASMINE_SINGLE_RUN=1 meteor --test
+``
 
 ### Stubs
 
