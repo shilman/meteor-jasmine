@@ -84,7 +84,8 @@ _.extend(ClientUnitTestFramework.prototype, {
     return [
       this._getAssetPath('lib/VelocityTestReporter.js'),
       this._getAssetPath('client/unit/assets/adapter.js'),
-      this._getAssetPath('client/unit/assets/jasmine-jquery.js')
+      this._getAssetPath('client/unit/assets/jasmine-jquery.js'),
+      this._getAssetPath('lib/mock.js')
     ]
   },
   _getStubFiles: function () {
