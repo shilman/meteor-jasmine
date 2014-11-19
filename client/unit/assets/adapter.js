@@ -11,18 +11,21 @@ var createStartFn = function(karma) {
       if (window.ddpParentConnection.status().connected) {
         computation.stop()
 
-        // Add the Velocity Reporter
-        var jasmineEnv = window.jasmine.getEnv()
-        var velocityReporter = new VelocityTestReporter({
-          mode: 'Client Unit',
-          framework: 'jasmine-client-unit',
-          env: jasmineEnv,
-          timer: new window.jasmine.Timer()
-        })
-        jasmineEnv.addReporter(velocityReporter)
+        // Force to not run in a computation
+        setTimeout(function () {
+          // Add the Velocity Reporter
+          var jasmineEnv = window.jasmine.getEnv()
+          var velocityReporter = new VelocityTestReporter({
+            mode: 'Client Unit',
+            framework: 'jasmine-client-unit',
+            env: jasmineEnv,
+            timer: new window.jasmine.Timer()
+          })
+          jasmineEnv.addReporter(velocityReporter)
 
-        // Start the Karma test run
-        karmaStart.call(this, config)
+          // Start the Karma test run
+          karmaStart.call(this, config)
+        })
       }
     })
   }
