@@ -27,7 +27,6 @@
             jasmineEnv.addReporter(velocityReporter)
 
             // Start the Karma test run
-            console.log('STARTING TESTS')
             karmaStart.call(this, config)
           })
         }
