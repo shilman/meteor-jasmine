@@ -17,9 +17,10 @@ ClientUnitTestFramework.prototype = Object.create(JasmineTestFramework.prototype
 _.extend(ClientUnitTestFramework.prototype, {
   start: function () {
     var files = this._getPreAppFiles().concat(
-      this._getAppFiles(),
+      this._getPackageFiles(),
       this._getHelperFiles(),
       this._getStubFiles(),
+      this._getAppFiles(),
       this._getTestFiles()
     )
 
@@ -35,7 +36,7 @@ _.extend(ClientUnitTestFramework.prototype, {
       ],
       files: files,
       client: {
-        args: [Meteor.absoluteUrl()]
+        args: [__meteor_runtime_config__]
       },
       browserDisconnectTimeout: 10000,
       browserNoActivityTimeout: 15000,
@@ -62,10 +63,10 @@ _.extend(ClientUnitTestFramework.prototype, {
       this._getAssetPath('client/unit/assets/__meteor_runtime_config__.js')
     ]
   },
-  _getAppFiles: function () {
+  _getPackageFiles: function () {
     return _.chain(WebApp.clientPrograms['web.browser'].manifest)
       .filter(function (file) {
-        return file.type === 'js' // TODO: Remove and serve all types correctly
+        return file.type === 'js' && file.path.indexOf('packages/') === 0
       })
       .filter(function (file) {
         var ignoredFiles = [
@@ -74,6 +75,16 @@ _.extend(ClientUnitTestFramework.prototype, {
           'packages/velocity_html-reporter.js'
         ]
         return !_.contains(ignoredFiles, file.path)
+      })
+      .map(function (file) {
+        return '.meteor/local/build/programs/web.browser/' + file.path
+      })
+      .value()
+  },
+  _getAppFiles: function () {
+    return _.chain(WebApp.clientPrograms['web.browser'].manifest)
+      .filter(function (file) {
+        return file.type === 'js' && file.path.indexOf('packages/') !== 0
       })
       .map(function (file) {
         return '.meteor/local/build/programs/web.browser/' + file.path
@@ -90,7 +101,7 @@ _.extend(ClientUnitTestFramework.prototype, {
   },
   _getStubFiles: function () {
     return [
-      'tests/jasmine/client/unit/**/*-{stub,stubs}.{js,coffee,litcoffee,coffee.md}'
+      'tests/jasmine/client/unit/**/*-{stub,stubs,mock,mocks}.{js,coffee,litcoffee,coffee.md}'
     ]
   },
   _getTestFiles: function () {
