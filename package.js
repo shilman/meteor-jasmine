@@ -98,6 +98,20 @@ Package.onUse(function (api) {
   // ----------------------------------------
 
   api.addFiles([
+    // Sample tests
+    'client/integration/sample-tests/sample/spec/PlayerSpec.js',
+    'client/integration/sample-tests/sample/spec/SpecMatchers.js',
+    'client/integration/sample-tests/sample/src/Player.js',
+    'client/integration/sample-tests/sample/src/Song.js',
+    'client/unit/sample-tests/sample/spec/PlayerSpec.js',
+    'client/unit/sample-tests/sample/spec/SpecMatchers.js',
+    'client/unit/sample-tests/sample/src/Player.js',
+    'client/unit/sample-tests/sample/src/Song.js',
+    'server/unit/sample-tests/sample/spec/PlayerSpec.js',
+    'server/unit/sample-tests/sample/spec/SpecMatchers.js',
+    'server/unit/sample-tests/sample/src/Player.js',
+    'server/unit/sample-tests/sample/src/Song.js',
+    // Other
     'server/unit/package-stubs.js.tpl',
     'server/unit/metadata-reader.js.tpl',
     'lib/mock.js',

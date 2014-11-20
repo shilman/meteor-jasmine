@@ -14,6 +14,26 @@ ServerUnitTestFramework = function (options) {
   _.defaults(options, {
     name: 'jasmine-server-unit',
     regex: '^tests/jasmine/server/unit/.+\\.(js|coffee|litcoffee|coffee\\.md)$',
+    sampleTestGenerator: function () {
+      return [
+        {
+          path: 'jasmine/server/unit/sample/spec/PlayerSpec.js',
+          contents: Assets.getText('server/unit/sample-tests/sample/spec/PlayerSpec.js')
+        },
+        {
+          path: 'jasmine/server/unit/sample/spec/SpecMatchers.js',
+          contents: Assets.getText('server/unit/sample-tests/sample/spec/SpecMatchers.js')
+        },
+        {
+          path: 'jasmine/server/unit/sample/src/Player.js',
+          contents: Assets.getText('server/unit/sample-tests/sample/src/Player.js')
+        },
+        {
+          path: 'jasmine/server/unit/sample/src/Song.js',
+          contents: Assets.getText('server/unit/sample-tests/sample/src/Song.js')
+        }
+      ]
+    },
     //regex: 'jasmine/.+\\.(js|coffee|litcoffee|coffee\\.md)$',
     jasmineRequire: jasmineRequire
   })
@@ -47,6 +67,8 @@ _.extend(ServerUnitTestFramework.prototype, {
   },
 
   runTests: function executeSpecsUnitMode() {
+    MockGenerator.generateMocks()
+
     var jasmine = this.jasmineRequire.core(this.jasmineRequire)
     var jasmineInterface = new JasmineInterface({jasmine: jasmine})
 

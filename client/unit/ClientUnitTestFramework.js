@@ -6,6 +6,26 @@ ClientUnitTestFramework = function (options) {
   _.defaults(options, {
     name: 'jasmine-client-unit',
     regex: '^tests/jasmine/client/unit/.+\\.(js|coffee|litcoffee|coffee\\.md)$',
+    sampleTestGenerator: function () {
+      return [
+        {
+          path: 'jasmine/client/unit/sample/spec/PlayerSpec.js',
+          contents: Assets.getText('client/unit/sample-tests/sample/spec/PlayerSpec.js')
+        },
+        {
+          path: 'jasmine/client/unit/sample/spec/SpecMatchers.js',
+          contents: Assets.getText('client/unit/sample-tests/sample/spec/SpecMatchers.js')
+        },
+        {
+          path: 'jasmine/client/unit/sample/src/Player.js',
+          contents: Assets.getText('client/unit/sample-tests/sample/src/Player.js')
+        },
+        {
+          path: 'jasmine/client/unit/sample/src/Song.js',
+          contents: Assets.getText('client/unit/sample-tests/sample/src/Song.js')
+        }
+      ]
+    },
     jasmineRequire: null
   })
 
