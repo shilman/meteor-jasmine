@@ -7,7 +7,7 @@ You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction
 
 ```bash
 meteor add sanjo:jasmine
-meteor add velocity:html-reporter@0.3.0-rc.3
+meteor add velocity:html-reporter
 ```
 
 ### Usage
