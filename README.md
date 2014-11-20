@@ -15,6 +15,11 @@ meteor add velocity:html-reporter
 Tests run automatically while the app runs in development mode locally.
 You can see the test results in the terminal and in the html-reporter overlay.
 
+### Further reading
+
+* [Jasmine 2.0 Documentation](http://jasmine.github.io/2.0/introduction.html)
+* [sanjo:jasmine Wiki](https://github.com/Sanjo/meteor-jasmine/wiki)
+
 ### Examples and Tutorials
 
 * [Integration and Unit tests for a refactored version of the Leaderboard example (by Jonas Aschenbrenner)](https://github.com/meteor-velocity/velocity-example/tree/jasmine-only/tests/jasmine/).
