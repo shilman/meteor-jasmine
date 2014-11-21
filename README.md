@@ -6,10 +6,9 @@ You can use all [Jasmine 2.0 features](http://jasmine.github.io/2.0/introduction
 ### Installation
 
 > __Important:__ Currently Meteor has an issue with one of velocity:core's release names.
-> To fix this issue you need to add velocity:core with a fixed version: `meteor add velocity:core@1.0.0-rc.5`
+> To fix this issue you need to add `velocity:core@1.0.0-rc.5` to your `.meteor/packages` and `.meteor/versions` file.
 
 ```bash
-meteor add velocity:core@1.0.0-rc.5
 meteor add sanjo:jasmine
 meteor add velocity:html-reporter
 ```
